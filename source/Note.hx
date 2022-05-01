@@ -115,6 +115,19 @@ class Note extends FlxSprite
 					noAnimation = true;
 				case 'GF Sing':
 					gfNote = true;
+				case 'phone note':
+					ignoreNote = mustPress;
+					reloadNote('PHONE');
+					noteSplashTexture = 'HURTnoteSplashes';
+					colorSwap.hue = 0;
+					colorSwap.saturation = 0;
+					colorSwap.brightness = 0;
+					if(isSustainNote) {
+						missHealth = 0.1;
+					} else {
+						missHealth = 0.3;
+					}
+					hitCausesMiss = true;
 			}
 			noteType = value;
 		}
@@ -242,7 +255,7 @@ class Note extends FlxSprite
 		if(prefix == null) prefix = '';
 		if(texture == null) texture = '';
 		if(suffix == null) suffix = '';
-		
+
 		var skin:String = texture;
 		if(texture.length < 1) {
 			skin = PlayState.SONG.arrowSkin;
@@ -282,12 +295,12 @@ class Note extends FlxSprite
 				offsetX += lastNoteOffsetXForPixelAutoAdjusting;
 				lastNoteOffsetXForPixelAutoAdjusting = (width - 7) * (PlayState.daPixelZoom / 2);
 				offsetX -= lastNoteOffsetXForPixelAutoAdjusting;
-				
+
 				/*if(animName != null && !animName.endsWith('end'))
 				{
 					lastScaleY /= lastNoteScaleToo;
 					lastNoteScaleToo = (6 / height);
-					lastScaleY *= lastNoteScaleToo; 
+					lastScaleY *= lastNoteScaleToo;
 				}*/
 			}
 		} else {
