@@ -1,41 +1,50 @@
 {
-	"songs": [
-		[
-			"Invasion",
-			"dad",
-			[
-				146,
-				113,
-				253
-			]
-		],
-		[
-			"Cornage",
-			"dad",
-			[
-				146,
-				113,
-				253
-			]
-		]
-	],
-	"hiddenUntilUnlocked": false,
+	"storyName": "The invasion",
+	"difficulties": "Normal",
 	"hideFreeplay": false,
 	"weekBackground": "stage",
-	"difficulties": "Normal",
-	"weekCharacters": [
-		"dad",
-		"bf",
-		"gf"
-	],
-	"storyName": "Your New Week",
-	"weekName": "Custom Week",
+	"weekBefore": "tutorial",
 	"freeplayColor": [
 		146,
 		113,
 		253
 	],
+	"startUnlocked": true,
 	"hideStoryMode": false,
-	"weekBefore": "tutorial",
-	"startUnlocked": true
+	"songs": [
+		[
+			"Invasion",
+			"dave",
+			[
+				66,
+				93,
+				255
+			]
+		],
+		[
+			"Cornage",
+			"void-bambi",
+			[
+				255,
+				255,
+				255
+			]
+		],
+		[
+			"Error",
+			"error_bambi",
+			[
+				166,
+				40,
+				40
+			]
+		]
+	],
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"hiddenUntilUnlocked": false,
+	"weekName": "Custom Week"
 }
