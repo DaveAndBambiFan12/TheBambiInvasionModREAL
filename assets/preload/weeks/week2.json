@@ -1,8 +1,47 @@
 {
+	"storyName": "Your New Week",
+	"difficulties": "Normal",
+	"hideFreeplay": false,
+	"weekBackground": "stage",
+	"weekBefore": "week1",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"startUnlocked": true,
+	"hideStoryMode": false,
 	"songs": [
 		[
 			"choco",
-			"dad",
+			"choco-pixel",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"nerd!",
+			"nerd-pixel",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"goose",
+			"amogus-pixel",
+			[
+				146,
+				113,
+				253
+			]
+		],
+		[
+			"equivocation",
+			"expunged-pixel",
 			[
 				146,
 				113,
@@ -10,23 +49,11 @@
 			]
 		]
 	],
-	"hiddenUntilUnlocked": false,
-	"hideFreeplay": false,
-	"weekBackground": "stage",
-	"difficulties": "Normal",
 	"weekCharacters": [
 		"dad",
 		"bf",
 		"gf"
 	],
-	"storyName": "Your New Week",
-	"weekName": "Custom Week",
-	"freeplayColor": [
-		146,
-		113,
-		253
-	],
-	"hideStoryMode": false,
-	"weekBefore": "week1",
-	"startUnlocked": false
+	"hiddenUntilUnlocked": false,
+	"weekName": "Custom Week"
 }

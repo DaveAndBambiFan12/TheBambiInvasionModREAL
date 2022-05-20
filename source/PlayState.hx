@@ -271,6 +271,8 @@ class PlayState extends MusicBeatState
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
 
+	public var doCamFollow:Array<Bool> = [true, true, true]; //0 : bf, 1 : dad, 2 : gf
+
 	override public function create()
 	{
 		Paths.clearStoredMemory();
@@ -3846,6 +3848,41 @@ class PlayState extends MusicBeatState
 			dad.specialAnim = true;
 			dad.heyTimer = 0.6;
 		} else if(!note.noAnimation) {
+			/*
+			didnt want to finish this
+			if(note.noteType != 'Hey!' && !note.gfNote && doCamFollow[0]) //CAM FOLLOW FOR DAD
+			{
+				var camPos:Array<Float> = [
+					dad.cameraPosition[0] - dadCameraOffset[0] - 15, //0 left
+					dad.cameraPosition[1] - dadCameraOffset[1] + 15, //1 down
+					dad.cameraPosition[1] - dadCameraOffset[1] - 15, //2 up
+					dad.cameraPosition[0] - dadCameraOffset[0] + 15, //3 right
+				]
+
+				camFollow.set(dadCameraOffset.getMidpoint().x - 100, dadCameraOffset.getMidpoint().y - 100);
+
+				if(note.noteData == 0 || note.noteData == 3)
+					camFollow.x -= camPos[note.noteData];
+				else
+					camFollow.y += camPos[note.noteData];
+			}
+			else if (note.noteType != 'Hey!' && note.gfNote && doCamFollow[3]) //CAM FOLLOW FOR GF DAD
+			{
+				var camPos:Array<Float> = [
+					girlfriend.cameraPosition[0] - girlfriendCameraOffset[0] - 15, //0 left
+					girlfriend.cameraPosition[1] - girlfriendCameraOffset[1] + 15, //1 down
+					girlfriend.cameraPosition[1] - girlfriendCameraOffset[1] - 15, //2 up
+					girlfriend.cameraPosition[0] - girlfriendCameraOffset[0] + 15, //3 right
+				]
+
+				camFollow.set(girlfriend.getMidpoint().x - 100, girlfriend.getMidpoint().y - 100);
+
+				if(note.noteData == 0 || note.noteData == 3)
+					camFollow.x -= camPos[note.noteData];
+				else
+					camFollow.y += camPos[note.noteData];
+			}
+			*/
 			var altAnim:String = "";
 
 			var curSection:Int = Math.floor(curStep / 16);
@@ -3937,6 +3974,28 @@ class PlayState extends MusicBeatState
 				if(note.noteType == 'Alt Animation') daAlt = '-alt';
 
 				var animToPlay:String = singAnimations[Std.int(Math.abs(note.noteData))];
+
+				/*
+				if(note.noteType != 'Hey!' && (doCamFollow[0] || doCamFollow[3] && note.gfNote)) //CAM FOLLOW FOR BF
+				{
+					var daCamPos:Array<Dynamic> = note.gfNote ? girlfriend.cameraPosition : boyfriend.cameraPosition;
+					var daCamOffset:Array<Dynamic> = note.gfNote ? girlfriendCameraOffset : boyfriendCameraOffset;
+					var camPos:Array<Float> = [
+						daCamPos[0] - daCamOffset[0] - 15, //0 left
+						daCamPos[1] - daCamOffset[1] + 15, //1 down
+						daCamPos[1] - daCamOffset[1] - 15, //2 up
+						daCamPos[0] - daCamOffset[0] + 15, //3 right
+					]
+
+					var daMidPoints:Array<Float> = note.gfNote ? [girlfriend.getMidpoint().x, girlfriend.getMidpoint().y] : [girlfriend.getMidpoint().x, girlfriend.getMidpoint().y]
+					camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+
+					if(note.noteData == 0 || note.noteData == 3)
+						camFollow.x -= camPos[note.noteData];
+					else
+						camFollow.y += camPos[note.noteData];
+				}
+				*/
 
 				if(note.gfNote)
 				{
