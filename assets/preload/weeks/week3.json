@@ -1,0 +1,32 @@
+{
+	"songs": [
+		[
+			"long-thong",
+			"dave-pixel",
+			[
+				75,
+				75,
+				235
+			]
+		]
+	],
+	"hiddenUntilUnlocked": false,
+	"hideFreeplay": false,
+	"weekBackground": "stage",
+	"difficulties": "Normal",
+	"weekCharacters": [
+		"dad",
+		"bf",
+		"gf"
+	],
+	"storyName": "the unlitnmemate last battle",
+	"weekName": "long thong",
+	"freeplayColor": [
+		146,
+		113,
+		253
+	],
+	"hideStoryMode": false,
+	"weekBefore": "tutorial",
+	"startUnlocked": true
+}

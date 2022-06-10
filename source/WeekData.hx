@@ -8,7 +8,6 @@ import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import haxe.Json;
 import haxe.format.JsonParser;
-import sys.io.File;
 
 using StringTools;
 
@@ -33,7 +32,7 @@ class WeekData {
 	public static var weeksLoaded:Map<String, WeekData> = new Map<String, WeekData>();
 	public static var weeksList:Array<String> = [];
 	public var folder:String = '';
-	
+
 	// JSON variables
 	public var songs:Array<Dynamic>;
 	public var weekCharacters:Array<String>;
@@ -247,7 +246,7 @@ class WeekData {
 	public static function loadTheFirstEnabledMod()
 	{
 		Paths.currentModDirectory = '';
-		
+
 		#if MODS_ALLOWED
 		if (FileSystem.exists("modsList.txt"))
 		{

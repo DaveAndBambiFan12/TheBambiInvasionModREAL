@@ -219,14 +219,14 @@ class Paths
 
 	inline static public function voices(song:String):Any
 	{
-		var songKey:String = '${song.toLowerCase().replace(' ', '-')}/Voices';
+		var songKey:String = '${formatToSongPath(song)}/Voices';
 		var voices = returnSound('songs', songKey);
 		return voices;
 	}
 
 	inline static public function inst(song:String):Any
 	{
-		var songKey:String = '${song.toLowerCase().replace(' ', '-')}/Inst';
+		var songKey:String = '${formatToSongPath(song)}/Inst';
 		var inst = returnSound('songs', songKey);
 		return inst;
 	}
@@ -377,7 +377,13 @@ class Paths
 		#if MODS_ALLOWED
 			currentTrackedSounds.set(gottenPath, Sound.fromFile('./' + gottenPath));
 		#else
-			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+		{
+			var folder:String = '';
+			#if html5
+			if(path == 'songs') folder = 'songs:';
+			#end
+			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+		}
 		#end
 		localTrackedAssets.push(gottenPath);
 		return currentTrackedSounds.get(gottenPath);
