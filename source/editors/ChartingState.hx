@@ -199,7 +199,7 @@ class ChartingState extends MusicBeatState
 	override function create()
 	{
 		for( i in 0...3) {
-			noteTypeList.push('bambi kid ' + i)
+			noteTypeList.push('bambi kid ' + i);
 		}
 
 		if (PlayState.SONG != null)

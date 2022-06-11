@@ -59,6 +59,7 @@ import DialogueBoxPsych;
 import sys.FileSystem;
 #end
 import Shaders.PulseEffect;
+import openfl.filters.ShaderFilter;
 
 using StringTools;
 
@@ -285,10 +286,6 @@ class PlayState extends MusicBeatState
 
 	public var threeDeeBg:BGSprite;
 
-	//equivocation bgs
-	public var metalCap:BGSpite;
-	public var daveHouse:BGSpite;
-
 	public static var screenshader:Shaders.PulseEffect = new PulseEffect();
 
 	override public function create()
@@ -507,15 +504,6 @@ class PlayState extends MusicBeatState
 						pathy = 'nerd';
 					case 'sussyStage':
 						pathy = 'sussy';
-					case 'equivocation':
-						pathy = 'funy/ohno';
-						metalCap = new BGSprite('funy/metal cap');
-						metalCap.visible = false;
-						add(metalCap);
-
-						daveHouse = new BGSpite('funy/house')
-						daveHouse.visible = false;
-						add(daveHouse)
 					default:
 						stageData.directory = '';
 						pathy = 'redsky';
@@ -2978,7 +2966,7 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		//if(SONG.notes[id].noteType.startsWith('bambi kid'))
+
 
 		if (!SONG.notes[id].mustHitSection)
 		{
