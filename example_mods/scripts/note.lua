@@ -1,4 +1,4 @@
-chars = {'choco', 'amogus', 'nerd', 'nerd_dumb'}
+chars = {'choco', 'amogus', 'nerd', 'nerd_dumb', 'expunged', 'jadi', 'voidbi', 'dave-house'}
 penis = false
 
 function onCreatePost()

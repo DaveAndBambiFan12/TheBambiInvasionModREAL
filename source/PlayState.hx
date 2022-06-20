@@ -273,7 +273,7 @@ class PlayState extends MusicBeatState
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
 
-	public var doCamFollow:Array<Bool> = [true, true, true]; //0 : bf, 1 : dad, 2 : gf
+	public static var vocalsVolume:Float = 1;
 
 	public var daveNOT:Character; //long thong chars
 	public var bambiNOT:Character;
@@ -286,7 +286,21 @@ class PlayState extends MusicBeatState
 
 	public var threeDeeBg:BGSprite;
 
+
+	//equivocation bgs
+
+	var metalCapStage:BGSprite;
+	var davesHouse:BGSprite;
+
+	var equivocationPhase:String;
+
+	public static var daSongFinished:Bool = false;
+
 	public static var screenshader:Shaders.PulseEffect = new PulseEffect();
+
+	public static var floatyGuys:Array<String> = ['choco', 'expunged', 'jadi', 'nerd', 'nerd-dumb', 'voidbi', 'amogus'];
+
+	var elapsedTime:Float = 0;
 
 	override public function create()
 	{
@@ -363,6 +377,9 @@ class PlayState extends MusicBeatState
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + detailsText;
 		#end
+
+		if(SONG.song == 'equivocation') //hahahahahahhahahahahahahahahahahahahaha
+			vocalsVolume = 0.8;
 
 		GameOverSubstate.resetVariables();
 		var songName:String = Paths.formatToSongPath(SONG.song);
@@ -494,7 +511,7 @@ class PlayState extends MusicBeatState
 				grass = new BGSprite('bg/grass', -320, 20);
 				ezScale(grass, 1.7, 1.7);
 				add(grass);
-			case 'chocoStage' | 'nerdStage' | 'sussyStage':
+			case 'chocoStage' | 'nerdStage' | 'sussyStage' | 'equivocation':
 				var pathy:String;
 				switch(curStage)
 				{
@@ -504,12 +521,22 @@ class PlayState extends MusicBeatState
 						pathy = 'nerd';
 					case 'sussyStage':
 						pathy = 'sussy';
+					case 'equivocation':
+						pathy = 'funy/ohno';
+
+						metalCapStage = new BGSprite('funy/metal cap');
+						metalCapStage.visible = false;
+						add(metalCapStage);
+
+						davesHouse = new BGSprite('funy/house');
+						davesHouse.visible = false;
+						add(davesHouse);
 					default:
 						stageData.directory = '';
 						pathy = 'redsky';
 				}
 
-				threeDeeBg = new BGSprite(pathy, -1680, -710);
+				threeDeeBg = new BGSprite(pathy, -900, -310);
 				threeDeeBg.antialiasing = false;
 				ezScale(threeDeeBg, 2, 2);
 				add(threeDeeBg);
@@ -2030,6 +2057,22 @@ class PlayState extends MusicBeatState
 
 		callOnLuas('onUpdate', [elapsed]);
 
+		elapsedTime += elapsed;
+
+		setOnLuas('elapsedTime', elapsedTime);
+
+		//floatying characterszs
+		for(i in 0...floatyGuys.length) {
+			var fuckMeInTheAss:Int = (dad.curCharacter == 'voidbi') ? 2 : 1;
+			if(boyfriend.curCharacter == floatyGuys[i])
+				boyfriend.y -= Math.sin(elapsedTime + 1 / fuckMeInTheAss);
+			if(dad.curCharacter == floatyGuys[i])
+				dad.y -= Math.sin(elapsedTime / fuckMeInTheAss);
+			if(gf.curCharacter == floatyGuys[i])
+				gf.y -= Math.cos(elapsedTime / fuckMeInTheAss);
+		}
+
+
 		switch (curStage)
 		{
 			case 'schoolEvil':
@@ -2949,12 +2992,16 @@ class PlayState extends MusicBeatState
 					screenshader.Enabled = !screenshader.Enabled;
 				else
 					trace('k nevermind');
+
+			case 'swapBG':
+				camOther.flash(FlxColor.WHITE, 0.5);
+				swapBG(value1);
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
 
 	function moveCameraSection(?id:Int = 0):Void {
-		if(SONG.notes[id] == null) return;
+		if(SONG.notes[id] == null || equivocationPhase == 'dave') return;
 
 		if (gf != null && SONG.notes[id].gfSection)
 		{
@@ -2986,16 +3033,18 @@ class PlayState extends MusicBeatState
 	{
 		if(isDad)
 		{
-			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+			camFollow.set(dad.getMidpoint().x + 150, (equivocationPhase == 'jadi_64') ? 620 : dad.getMidpoint().y - 100);
 			camFollow.x += dad.cameraPosition[0] + opponentCameraOffset[0];
-			camFollow.y += dad.cameraPosition[1] + opponentCameraOffset[1];
+			if(equivocationPhase != 'jadi_64')
+				camFollow.y += dad.cameraPosition[1] + opponentCameraOffset[1];
 			tweenCamIn();
 		}
 		else
 		{
-			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+			camFollow.set(boyfriend.getMidpoint().x - 100, (equivocationPhase == 'jadi_64') ? 620 : boyfriend.getMidpoint().y - 100);
 			camFollow.x -= boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];
-			camFollow.y += boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];
+			if(equivocationPhase != 'jadi_64')
+				camFollow.y += boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];
 
 			if (Paths.formatToSongPath(SONG.song) == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
 			{
@@ -3006,6 +3055,62 @@ class PlayState extends MusicBeatState
 					}
 				});
 			}
+		}
+	}
+
+	function swapBG(which:String)
+	{
+		trace('SWAPPING DA BG!!!', which);
+		equivocationPhase = which;
+		switch(which)
+		{
+			case 'jadi_64':
+				boyfriendGroup.x = 0;
+				boyfriendGroup.y = 0;
+				dadGroup.x = 0;
+				dadGroup.y = 0;
+				gf.visible = false;
+				threeDeeBg.visible = false;
+				metalCapStage.visible = true;
+				cameraSpeed = 100;
+				new FlxTimer().start(0.25, function(tmr:FlxTimer)
+        {
+          cameraSpeed = 1;
+        });
+			case 'dave':
+				boyfriend.visible = false;
+				dadGroup.x = 580;
+				dadGroup.y = 235.35;
+				gf.visible = false;
+				FlxG.camera.zoom = 0.7;
+				defaultCamZoom = 0.7;
+				camFollow.x = 1920/2;
+				camFollow.y = 1080/2;
+				threeDeeBg.visible = false;
+				davesHouse.visible = true;
+				cameraSpeed = 100;
+			default:
+				boyfriendGroup.x = BF_X;
+				boyfriendGroup.y = BF_Y;
+				dadGroup.x = DAD_X;
+				dadGroup.y = DAD_Y;
+				gf.visible = true;
+				boyfriend.visible = true;
+				metalCapStage.visible = false;
+				davesHouse.visible = false;
+				threeDeeBg.visible = true;
+				FlxG.camera.zoom = 0.9;
+				defaultCamZoom = 0.9;
+				cameraSpeed = 1;
+				switch(which)
+				{
+					case 'expunged':
+						threeDeeBg.loadGraphic(Paths.image('funy/ohno', 'dave'));
+					case 'voidbi':
+						threeDeeBg.loadGraphic(Paths.image('funy/voibi', 'dave'));
+					case 'jadi':
+						threeDeeBg.loadGraphic(Paths.image('funy/jadi', 'dave'));
+				}
 		}
 	}
 
@@ -3027,6 +3132,7 @@ class PlayState extends MusicBeatState
 	//Any way to do this without using a different function? kinda dumb
 	private function onSongComplete()
 	{
+		daSongFinished = true;
 		finishSong(false);
 	}
 	public function finishSong(?ignoreNoteOffset:Bool = false):Void
@@ -3247,7 +3353,7 @@ class PlayState extends MusicBeatState
 		//trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
 
 		// boyfriend.playAnim('hey');
-		vocals.volume = 1;
+		vocals.volume = vocalsVolume;
 
 		var placement:String = Std.string(combo);
 
@@ -3791,7 +3897,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (SONG.needsVoices)
-			vocals.volume = 1;
+			vocals.volume = vocalsVolume;
 
 		var time:Float = 0.15;
 		if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
@@ -3926,7 +4032,7 @@ class PlayState extends MusicBeatState
 				});
 			}
 			note.wasGoodHit = true;
-			vocals.volume = 1;
+			vocals.volume = vocalsVolume;
 
 			var isSus:Bool = note.isSustainNote; //GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 			var leData:Int = Math.round(Math.abs(note.noteData));
@@ -4308,6 +4414,47 @@ class PlayState extends MusicBeatState
 		{
 			lightningStrikeShit();
 		}
+
+		if(SONG.song == 'equivocation')
+		{
+			switch(curBeat)
+			{
+				case 2195:
+					FlxTween.tween(this, {health: 0.1}, 573.2 - 572.87, {
+            ease: FlxEase.cubeInOut,
+            onComplete: function(twn:FlxTween)
+            {
+              trace('did the health drain smile');
+            }
+          });
+				case 2656:
+					dad.visible = false; //just incase!!!
+					dad.playAnim('intro', true);
+					dad.specialAnim = true;
+					dad.visible = true;
+				case 2687:
+					dad.specialAnim = false;
+				case 2912:
+					FlxTween.color(davesHouse, 763.83 - 759.65, FlxColor.WHITE, FlxColor.RED, {
+						onComplete: function(twn:FlxTween) {
+							trace('dave angrey nwo!!');
+						}
+					});
+					FlxTween.color(dad, 763.83 - 759.65, FlxColor.WHITE, FlxColor.RED, {
+						onComplete: function(twn:FlxTween) {
+							trace('dave angrey nwo!! 2');
+						}
+					});
+				case 848:
+					davesHouse.color = FlxColor.WHITE;
+					dad.color = FlxColor.WHITE;
+				case 992:
+					var blackthing:FlxSprite = new FlxSprite().makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
+					blackthing.cameras = [camOther];
+					add(blackthing);
+					camOther.flash(FlxColor.WHITE, 0.5);
+			}
+		}
 		lastBeatHit = curBeat;
 
 		setOnLuas('curBeat', curBeat); //DAWGG?????
@@ -4427,16 +4574,6 @@ class PlayState extends MusicBeatState
 									if(achievementName == 'week1_nomiss') unlock = true;
 								case 'week2':
 									if(achievementName == 'week2_nomiss') unlock = true;
-								case 'week3':
-									if(achievementName == 'week3_nomiss') unlock = true;
-								case 'week4':
-									if(achievementName == 'week4_nomiss') unlock = true;
-								case 'week5':
-									if(achievementName == 'week5_nomiss') unlock = true;
-								case 'week6':
-									if(achievementName == 'week6_nomiss') unlock = true;
-								case 'week7':
-									if(achievementName == 'week7_nomiss') unlock = true;
 							}
 						}
 					case 'ur_bad':
