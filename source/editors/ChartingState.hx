@@ -1712,7 +1712,7 @@ class ChartingState extends MusicBeatState
 				var holdingShift:Float = 1;
 				if (FlxG.keys.pressed.CONTROL) holdingShift = 0.25;
 				else if (FlxG.keys.pressed.SHIFT) holdingShift = 4;
-				else if (FlxG.keys.pressed.M) holdingShift = 16;
+				else if (FlxG.keys.pressed.M) holdingShift = 32;
 
 				var daTime:Float = 700 * FlxG.elapsed * holdingShift;
 

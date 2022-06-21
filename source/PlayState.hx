@@ -4445,10 +4445,10 @@ class PlayState extends MusicBeatState
 							trace('dave angrey nwo!! 2');
 						}
 					});
-				case 848:
+				case 3392:
 					davesHouse.color = FlxColor.WHITE;
 					dad.color = FlxColor.WHITE;
-				case 992:
+				case 3968:
 					var blackthing:FlxSprite = new FlxSprite().makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 					blackthing.cameras = [camOther];
 					add(blackthing);

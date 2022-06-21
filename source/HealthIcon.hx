@@ -12,6 +12,8 @@ class HealthIcon extends FlxSprite
 	private var isPlayer:Bool = false;
 	private var char:String = '';
 
+	var pixelDudes:Array<String> = ['choco', 'amogus', 'nerd', 'nerd_dumb', 'expunged', 'jadi', 'jadi_64', 'voidbi', 'dave-house'];
+
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
@@ -60,6 +62,13 @@ class HealthIcon extends FlxSprite
 			{
 				flipX = true;
 			}
+
+			for(i in 0...pixelDudes.length)
+			{
+				if(char == pixelDudes[i])
+					antialiasing = false;
+			}
+
 		}
 	}
 
