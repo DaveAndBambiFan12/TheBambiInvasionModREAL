@@ -13,7 +13,7 @@
 		},
 		{
 			"offsets": [
-				0,
+				3,
 				0
 			],
 			"loop": false,
@@ -56,22 +56,22 @@
 			"name": "down"
 		}
 	],
-	"no_antialiasing": false,
-	"image": "characters/jadi_64",
+	"no_antialiasing": true,
+	"image": "characters/dave-ASSVIEW",
 	"position": [
 		0,
 		0
 	],
-	"healthicon": "jadi",
+	"healthicon": "dave",
 	"flip_x": false,
 	"healthbar_colors": [
-		148,
-		144,
-		25
+		15,
+		95,
+		255
 	],
 	"camera_position": [
-		-330,
-		240
+		0,
+		0
 	],
 	"sing_duration": 4,
 	"scale": 1

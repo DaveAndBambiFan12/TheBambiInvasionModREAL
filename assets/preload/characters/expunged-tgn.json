@@ -18,17 +18,6 @@
 			],
 			"loop": false,
 			"fps": 24,
-			"anim": "idle",
-			"indices": [],
-			"name": "idle"
-		},
-		{
-			"offsets": [
-				0,
-				0
-			],
-			"loop": false,
-			"fps": 24,
 			"anim": "singUP",
 			"indices": [],
 			"name": "up"
@@ -54,24 +43,35 @@
 			"anim": "singDOWN",
 			"indices": [],
 			"name": "down"
+		},
+		{
+			"offsets": [
+				1,
+				0
+			],
+			"indices": [],
+			"fps": 24,
+			"anim": "idle",
+			"loop": false,
+			"name": "idle"
 		}
 	],
-	"no_antialiasing": false,
-	"image": "characters/jadi_64",
+	"no_antialiasing": true,
+	"image": "characters/expunged-tgn",
 	"position": [
 		0,
 		0
 	],
-	"healthicon": "jadi",
+	"healthicon": "expunged-pixel",
 	"flip_x": false,
 	"healthbar_colors": [
-		148,
-		144,
-		25
+		150,
+		14,
+		11
 	],
 	"camera_position": [
-		-330,
-		240
+		0,
+		0
 	],
 	"sing_duration": 4,
 	"scale": 1

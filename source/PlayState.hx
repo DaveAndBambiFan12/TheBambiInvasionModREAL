@@ -460,6 +460,8 @@ class PlayState extends MusicBeatState
 		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
+		var tgnFG:BGSprite = null;  //da fuc?
+
 		switch (curStage)
 		{
 			case 'stage': //stagef rof afsd;
@@ -543,6 +545,20 @@ class PlayState extends MusicBeatState
 
 				if(!ClientPrefs.lowQuality)
 					addShader(threeDeeBg);
+			case 'tgn-stage':
+				var bg:BGSprite = new BGSprite('tgn/bg');
+				bg.antialiasing = false;
+				add(bg);
+
+				if(!ClientPrefs.lowQuality)
+					addShader(bg, 1, 1);
+
+				tgnFG = new BGSprite('tgn/fg');
+				tgnFG.antialiasing = false;
+
+				boyfriendGroup.x = -19.55;
+				boyfriendGroup.y = 263.15;
+
 			case 'awesome': //long thong
 				var bg:BGSprite = new BGSprite('swag', 150, 100);
 				bg.scale.set(3, 3);
@@ -563,7 +579,8 @@ class PlayState extends MusicBeatState
 			introSoundsSuffix = '-pixel';
 		}
 
-		add(gfGroup); //Needed for blammed lights //HAHAHHAHAHHAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHA
+		if(tgnFG == null)
+			add(gfGroup); //Needed for blammed lights //HAHAHHAHAHHAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHA
 
 		if(curStage == 'awesome')
 		{
@@ -578,6 +595,11 @@ class PlayState extends MusicBeatState
 			add(limo);
 
 		add(dadGroup);
+		if(tgnFG != null)
+		{
+			add(tgnFG);
+			add(gfGroup);
+		}
 		add(boyfriendGroup);
 
 		if(curStage == 'spooky') {
@@ -3002,6 +3024,13 @@ class PlayState extends MusicBeatState
 
 	function moveCameraSection(?id:Int = 0):Void {
 		if(SONG.notes[id] == null || equivocationPhase == 'dave') return;
+		else if(SONG.stage == 'tgn-stage')
+		{
+			camFollow.x = 1920/2;
+			camFollow.y = 1080/2;
+
+			return;
+		}
 
 		if (gf != null && SONG.notes[id].gfSection)
 		{
@@ -3999,6 +4028,11 @@ class PlayState extends MusicBeatState
 				{
 					boyfriend.playAnim(animToPlay + daAlt, true);
 					boyfriend.holdTimer = 0;
+					if(note.noteType == 'Both BF and GF Sing' && gf != null)
+					{
+						gf.playAnim(animToPlay + daAlt, true);
+						gf.holdTimer = 0;
+					}
 				}
 
 				if(note.noteType == 'Hey!') {
