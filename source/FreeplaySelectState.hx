@@ -35,7 +35,8 @@ class FreeplaySelectState extends MusicBeatState
 
     var optionShit:Array<String> = [
         'main',
-        'extra'
+        'extra',
+        'joke'
     ];
 
     var magenta:FlxSprite;

@@ -300,6 +300,14 @@ class PlayState extends MusicBeatState
 
 	public static var floatyGuys:Array<String> = ['choco', 'expunged', 'jadi', 'nerd', 'nerd-dumb', 'voidbi', 'amogus'];
 
+	//idiot song
+	//cheating, unfairness, opposition, extra one dont worry abnout that oen!
+	var modChartsEnabled:Array<Bool> = [false, false, false, false];
+
+	public static var defaultPlayerStrumsX:Array<Float> = [732, 844, 956, 1068]; //i hate this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! im gonna kill ym self!!!!!!!!!!!!!!!!!
+	public static var defaultOpponentStrumsX:Array<Float> = [92, 204, 316, 428];
+
+
 	var elapsedTime:Float = 0;
 
 	override public function create()
@@ -360,6 +368,9 @@ class PlayState extends MusicBeatState
 
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
+
+		if(ClientPrefs.downScroll)
+			strumLine.y = 560;
 
 		#if desktop
 		storyDifficultyText = CoolUtil.difficulties[storyDifficulty];
@@ -513,7 +524,7 @@ class PlayState extends MusicBeatState
 				grass = new BGSprite('bg/grass', -320, 20);
 				ezScale(grass, 1.7, 1.7);
 				add(grass);
-			case 'chocoStage' | 'nerdStage' | 'sussyStage' | 'equivocation':
+			case 'chocoStage' | 'nerdStage' | 'sussyStage' | 'equivocation' | 'unfairness':
 				var pathy:String;
 				switch(curStage)
 				{
@@ -533,6 +544,8 @@ class PlayState extends MusicBeatState
 						davesHouse = new BGSprite('funy/house');
 						davesHouse.visible = false;
 						add(davesHouse);
+					case 'unfairness':
+						pathy = 'funy/ohno';
 					default:
 						stageData.directory = '';
 						pathy = 'redsky';
@@ -541,6 +554,8 @@ class PlayState extends MusicBeatState
 				threeDeeBg = new BGSprite(pathy, -900, -310);
 				threeDeeBg.antialiasing = false;
 				ezScale(threeDeeBg, 2, 2);
+				if(curStage == 'unfairness')
+					threeDeeBg.color = FlxColor.fromRGB(FlxG.random.int(0, 255), FlxG.random.int(0, 255), FlxG.random.int(0, 255));
 				add(threeDeeBg);
 
 				if(!ClientPrefs.lowQuality)
@@ -1370,7 +1385,6 @@ class PlayState extends MusicBeatState
 			for (i in 0...opponentStrums.length) {
 				setOnLuas('defaultOpponentStrumX' + i, opponentStrums.members[i].x);
 				setOnLuas('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
-				//if(ClientPrefs.middleScroll) opponentStrums.members[i].visible = false;
 			}
 
 			startedCountdown = true;
@@ -2495,6 +2509,65 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		//cheating, unfairness, opposition, phonophobia JK NOT phonophobia CAUSE IT DOESNT HAVE A MODCHART
+
+		if(modChartsEnabled[1])
+		{
+			playerStrums.forEach(function(spr:FlxSprite)
+				{
+					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedTime + (spr.ID)) * 300);
+					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedTime + (spr.ID)) * 300);
+				});
+				opponentStrums.forEach(function(spr:FlxSprite)
+				{
+					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedTime + (spr.ID )) * 2) * 300);
+					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedTime + (spr.ID)) * 2) * 300);
+				});
+		}
+		if(modChartsEnabled[2])
+		{
+			playerStrums.forEach(function(spr:FlxSprite)
+				{
+					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin(elapsedTime + (spr.ID)) * 500);
+					spr.x += 500;
+					spr.y += Math.sin(elapsedTime) * Math.random();
+					spr.y -= Math.sin(elapsedTime) * 1.3;
+				});
+				opponentStrums.forEach(function(spr:FlxSprite)
+				{
+					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin((elapsedTime + (spr.ID )) * 2) * 500);
+					spr.x += 500;
+					spr.y += Math.sin(elapsedTime) * Math.random();
+					spr.y -= Math.sin(elapsedTime) * 1.3;
+				});
+		}
+		if(modChartsEnabled[0])
+		{
+			opponentStrums.forEach(function(spr:FlxSprite)
+			{
+				spr.x += Math.sin(elapsedTime) * ((spr.ID % 2) == 0 ? 1 : -1);
+				spr.x -= Math.sin(elapsedTime) * 1.5;
+			});
+			playerStrums.forEach(function(spr:FlxSprite)
+			{
+				spr.x -= Math.sin(elapsedTime) * ((spr.ID % 2) == 0 ? 1 : -1);
+				spr.x += Math.sin(elapsedTime) * 1.5;
+			});
+		}
+
+		/*
+		its funnier without this
+		var theresAModChart:Bool = false;
+		for(i in modChartsEnabled.length) {
+			if(modChartsEnabled[i])
+				theresAModChart = true;
+		}
+
+		if(!theresAModChart)
+			resetStrumPos();
+		*/
+
+
 		setOnLuas('cameraX', camFollowPos.x);
 		setOnLuas('cameraY', camFollowPos.y);
 		setOnLuas('botPlay', cpuControlled);
@@ -2504,19 +2577,43 @@ class PlayState extends MusicBeatState
 			i(elapsed);
 		}
 	}
+	function resetStrumPos()
+	{
+		opponentStrums.forEach(function(spr:FlxSprite)
+		{
+			spr.x = defaultOpponentStrumsX[spr.ID];
+			spr.y = strumLine.y;
+		});
+		playerStrums.forEach(function(spr:FlxSprite)
+		{
+			spr.x = defaultPlayerStrumsX[spr.ID];
+			spr.y = strumLine.y;
+		});
+	}
 
 	function openChartEditor()
 	{
-		persistentUpdate = false;
-		paused = true;
-		cancelMusicFadeTween();
-		disableEyeSores();
-		MusicBeatState.switchState(new ChartingState());
-		chartingMode = true;
+		switch(SONG.song)
+		{
+			case 'error':
+				FlxG.save.data.found_tru_tutorial = true;
+				PlayState.storyDifficulty = 1;
+				PlayState.SONG = Song.loadFromJson('true-tutorial','true-tutorial');
+				LoadingState.loadAndSwitchState(new PlayState(), true);
+			case 'equivocation':
+				//add later
+			default:
+				persistentUpdate = false;
+				paused = true;
+				cancelMusicFadeTween();
+				disableEyeSores();
+				MusicBeatState.switchState(new ChartingState());
+				chartingMode = true;
 
-		#if desktop
-		DiscordClient.changePresence("Chart Editor", null, null, true);
-		#end
+				#if desktop
+				DiscordClient.changePresence("Chart Editor", null, null, true);
+				#end
+		}
 	}
 
 	function disableEyeSores()
@@ -2963,6 +3060,13 @@ class PlayState extends MusicBeatState
 			case 'swapBG':
 				camOther.flash(FlxColor.WHITE, 0.5);
 				swapBG(value1);
+
+			case 'enable modchart':
+				var val1:Int = Std.parseInt(value1);
+				if(val1 != 3)
+					modChartsEnabled[val1] = !modChartsEnabled[val1];
+				else
+					resetStrumPos();
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
