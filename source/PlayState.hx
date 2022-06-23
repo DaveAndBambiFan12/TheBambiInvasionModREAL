@@ -2598,7 +2598,7 @@ class PlayState extends MusicBeatState
 			case 'error':
 				FlxG.save.data.found_errorCheater = true;
 				PlayState.storyDifficulty = 1;
-				PlayState.SONG = Song.loadFromJson('true-tutorial','true-tutorial');
+				PlayState.SONG = Song.loadFromJson('cheating-bad-bad-man-that-is-you','cheating-bad-bad-man-that-is-you');
 				LoadingState.loadAndSwitchState(new PlayState(), true);
 			case 'equivocation':
 				//add later
