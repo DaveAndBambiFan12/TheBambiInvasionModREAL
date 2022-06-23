@@ -2596,7 +2596,7 @@ class PlayState extends MusicBeatState
 		switch(SONG.song)
 		{
 			case 'error':
-				FlxG.save.data.found_tru_tutorial = true;
+				FlxG.save.data.found_errorCheater = true;
 				PlayState.storyDifficulty = 1;
 				PlayState.SONG = Song.loadFromJson('true-tutorial','true-tutorial');
 				LoadingState.loadAndSwitchState(new PlayState(), true);
