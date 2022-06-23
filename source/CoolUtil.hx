@@ -27,6 +27,8 @@ class CoolUtil
 
 	public static var threeDeeChars:Array<String> = ['choco'];
 
+	public static var curFreeplayGroup:Int = 0;
+
 	public static function getDifficultyFilePath(num:Null<Int> = null)
 	{
 		if(num == null) num = PlayState.storyDifficulty;

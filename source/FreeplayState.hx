@@ -28,6 +28,14 @@ class FreeplayState extends MusicBeatState
 {
 	var songs:Array<SongMetadata> = [];
 
+	var groups:Array<String> = ['main', 'extra']; //group names :)
+  var groupWeeks:Array<Dynamic> = // bruh moment!!!
+  [
+    ['tutorial', 'week1', 'week2', 'week3'],
+		['tgn']
+  ];
+	var curGroup:Int;
+
 	var selector:FlxText;
 	private static var curSelected:Int = 0;
 	var curDifficulty:Int = -1;
@@ -64,28 +72,33 @@ class FreeplayState extends MusicBeatState
 		DiscordClient.changePresence("In the Menus", null);
 		#end
 
+		curGroup = CoolUtil.curFreeplayGroup;
+
 		for (i in 0...WeekData.weeksList.length) {
 			if(weekIsLocked(WeekData.weeksList[i])) continue;
 
 			var leWeek:WeekData = WeekData.weeksLoaded.get(WeekData.weeksList[i]);
-			var leSongs:Array<String> = [];
-			var leChars:Array<String> = [];
-
-			for (j in 0...leWeek.songs.length)
+			if(groupWeeks[curGroup].contains(WeekData.weeksList[i]))
 			{
-				leSongs.push(leWeek.songs[j][0]);
-				leChars.push(leWeek.songs[j][1]);
-			}
+				var leSongs:Array<String> = [];
+				var leChars:Array<String> = [];
 
-			WeekData.setDirectoryFromWeek(leWeek);
-			for (song in leWeek.songs)
-			{
-				var colors:Array<Int> = song[2];
-				if(colors == null || colors.length < 3)
+				for (j in 0...leWeek.songs.length)
 				{
-					colors = [146, 113, 253];
+					leSongs.push(leWeek.songs[j][0]);
+					leChars.push(leWeek.songs[j][1]);
 				}
-				addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+
+				WeekData.setDirectoryFromWeek(leWeek);
+				for (song in leWeek.songs)
+				{
+					var colors:Array<Int> = song[2];
+					if(colors == null || colors.length < 3)
+					{
+						colors = [146, 113, 253];
+					}
+					addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]));
+				}
 			}
 		}
 		WeekData.loadTheFirstEnabledMod();
@@ -317,7 +330,7 @@ class FreeplayState extends MusicBeatState
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new FreeplaySelectState());
 		}
 
 		if(ctrl)

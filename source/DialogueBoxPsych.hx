@@ -71,6 +71,8 @@ class DialogueCharacter extends FlxSprite
 	public var curCharacter:String = 'bf';
 	public var skiptimer = 0;
 	public var skipping = 0;
+
+	var pixelGuys:Array<String> = ['amog', 'awesome', 'old', 'old-flipped', 'expunged', 'fatty'];
 	public function new(x:Float = 0, y:Float = 0, character:String = null)
 	{
 		super(x, y);
@@ -83,7 +85,17 @@ class DialogueCharacter extends FlxSprite
 		reloadAnimations();
 
 		antialiasing = ClientPrefs.globalAntialiasing;
-		if(jsonFile.no_antialiasing == true) antialiasing = false;
+
+		for(i in 0...pixelGuys.length) {
+			if(pixelGuys[i] == character)
+				antialiasing = false;
+		}
+
+		if(character.endsWith('-flipped'))
+			flipX = true;
+
+
+		if(jsonFile.no_antialiasing == true) antialiasing = false; //sometimes this shitter doesnt work!!!!
 	}
 
 	public function reloadCharacterJson(character:String) {
@@ -105,7 +117,7 @@ class DialogueCharacter extends FlxSprite
 		var path:String = Paths.getPreloadPath(characterPath);
 		rawJson = Assets.getText(path);
 		#end
-		
+
 		jsonFile = cast Json.parse(rawJson);
 	}
 
@@ -180,7 +192,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 	var offsetPos:Float = -600;
 
 	var textBoxTypes:Array<String> = ['normal', 'angry'];
-	
+
 	var curCharacter:String = "";
 	//var charPositionList:Array<String> = ['left', 'center', 'right'];
 
@@ -192,7 +204,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			FlxG.sound.playMusic(Paths.music(song), 0);
 			FlxG.sound.music.fadeIn(2, 0, 1);
 		}
-		
+
 		bgFade = new FlxSprite(-500, -500).makeGraphic(FlxG.width * 2, FlxG.height * 2, FlxColor.WHITE);
 		bgFade.scrollFactor.set();
 		bgFade.visible = true;
@@ -303,7 +315,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 					}
 					daText = new Alphabet(DEFAULT_TEXT_X, DEFAULT_TEXT_Y, textToType, false, true, 0.0, 0.7);
 					add(daText);
-					
+
 					if(skipDialogueThing != null) {
 						skipDialogueThing();
 					}
@@ -493,8 +505,23 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			daText.destroy();
 		}
 
+
+		var daSound:String = null; //idk if this is gonna be an issue but just incase
+
+		switch(arrayCharacters[character].curCharacter)
+		{
+			case 'dave' | 'old' | 'old-flipped' | 'awesome-dave':
+				daSound = 'dave_talk';
+			case 'white' | 'fatty' | 'expunged' | 'error':
+				daSound = 'bambi_dialogue';
+			case 'amog':
+				daSound = 'amog';
+			default:
+				daSound = curDialogue.sound;
+		}
+
 		textToType = curDialogue.text;
-		Alphabet.setDialogueSound(curDialogue.sound);
+		Alphabet.setDialogueSound(daSound);
 		daText = new Alphabet(DEFAULT_TEXT_X, DEFAULT_TEXT_Y, textToType, false, true, curDialogue.speed, 0.7);
 		add(daText);
 
@@ -535,7 +562,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		} else {
 			box.offset.set(10, 0);
 		}
-		
+
 		if(!box.flipX) box.offset.y += 10;
 	}
 }
