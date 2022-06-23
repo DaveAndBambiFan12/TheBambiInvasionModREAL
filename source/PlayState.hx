@@ -308,6 +308,9 @@ class PlayState extends MusicBeatState
 	public static var defaultOpponentStrumsX:Array<Float> = [92, 204, 316, 428];
 
 
+	var longThongBG:BGSprite; //im gonna kms!!!!!!!!!!!!!
+
+
 	var elapsedTime:Float = 0;
 
 	override public function create()
@@ -575,18 +578,23 @@ class PlayState extends MusicBeatState
 				boyfriendGroup.y = 263.15;
 
 			case 'awesome': //long thong
-				var bg:BGSprite = new BGSprite('swag', 150, 100);
-				bg.scale.set(3, 3);
-				bg.updateHitbox();
-				bg.scale.set(4.5, 4.5);
-				bg.antialiasing = false;
-				add(bg);
+				longThongBG = new BGSprite('swag', 145, 390);
+				longThongBG.scale.set(6, 6);
+				longThongBG.updateHitbox();
+				longThongBG.antialiasing = false;
+				longThongBG.x -= 700;
+				longThongBG.y -= 380;
+				add(longThongBG);
 
 				daveNOT = new Character(-60, 430, 'awesome-dave');
 				daveNOT.visible = false;
+				daveNOT.x -= 125;
+				daveNOT.y += 335;
 				add(daveNOT);
 				bambiNOT = new Character(-50, 590, 'dave-husband');
 				bambiNOT.visible = false;
+				bambiNOT.x -= 130;
+				bambiNOT.y += 380;
 				add(bambiNOT);
 		}
 
