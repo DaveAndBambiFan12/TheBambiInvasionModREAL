@@ -81,6 +81,7 @@ class Note extends FlxSprite
 	public var distance:Float = 2000; //plan on doing scroll directions soon -bb
 
 	public var hitsoundDisabled:Bool = false;
+	public var char:String;
 
 	private function set_texture(value:String):String {
 		if(texture != value) {
@@ -137,7 +138,7 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?char:String = 'boyfriend')
 	{
 		super();
 
@@ -155,6 +156,7 @@ class Note extends FlxSprite
 		if(!inEditor) this.strumTime += ClientPrefs.noteOffset;
 
 		this.noteData = noteData;
+		this.char = char;
 
 		if(noteData > -1) {
 			texture = '';
@@ -246,6 +248,12 @@ class Note extends FlxSprite
 			earlyHitMult = 1;
 		}
 		x += offsetX;
+
+		if(CoolUtil.threeDeeChars.contains(char) || CoolUtil.threeDeeChars.contains(PlayState.SONG.player1) && PlayState.SONG.player2 == char && FlxG.random.bool(25)|| CoolUtil.threeDeeChars.contains(PlayState.SONG.player2) && PlayState.SONG.player1 == char && FlxG.random.bool(25))
+		{
+			antialiasing = false;
+			texture = 'NOTE_assets_3D';
+		}
 	}
 
 	var lastNoteOffsetXForPixelAutoAdjusting:Float = 0;
@@ -260,7 +268,13 @@ class Note extends FlxSprite
 		if(texture.length < 1) {
 			skin = PlayState.SONG.arrowSkin;
 			if(skin == null || skin.length < 1) {
-				skin = 'NOTE_assets';
+				if(CoolUtil.threeDeeChars.contains(char) || CoolUtil.threeDeeChars.contains(PlayState.SONG.player1) && PlayState.SONG.player2 == char && FlxG.random.bool(25)|| CoolUtil.threeDeeChars.contains(PlayState.SONG.player2) && PlayState.SONG.player1 == char && FlxG.random.bool(25))
+				{
+					antialiasing = false;
+					skin = 'NOTE_assets_3D';
+				}
+				else
+					skin = 'NOTE_assets';
 			}
 		}
 

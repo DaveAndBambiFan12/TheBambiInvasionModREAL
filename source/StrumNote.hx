@@ -18,6 +18,9 @@ class StrumNote extends FlxSprite
 	private var player:Int;
 
 	public var texture(default, set):String = null;
+
+	public var char:String;
+
 	private function set_texture(value:String):String {
 		if(texture != value) {
 			texture = value;
@@ -26,16 +29,24 @@ class StrumNote extends FlxSprite
 		return value;
 	}
 
-	public function new(x:Float, y:Float, leData:Int, player:Int) {
+	public function new(x:Float, y:Float, leData:Int, player:Int, ?char:String = 'bf') {
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteData = leData;
 		this.player = player;
 		this.noteData = leData;
+		this.char = char;
 		super(x, y);
 
 		var skin:String = 'NOTE_assets';
-		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
+		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1)
+			skin = PlayState.SONG.arrowSkin;
+		else if(CoolUtil.threeDeeChars.contains(char) && !PlayState.isPixelStage)
+		{
+			antialiasing = false;
+			skin = 'NOTE_assets_3D';
+		}
+
 		texture = skin; //Load texture and anims
 
 		scrollFactor.set();

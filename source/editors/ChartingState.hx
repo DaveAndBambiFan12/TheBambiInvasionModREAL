@@ -682,33 +682,7 @@ class ChartingState extends MusicBeatState
 		blockPressWhileTypingOnStepper.push(stepperSectionBPM);
 
 
-		var copyButton:FlxButton = new FlxButton(10, 150, "Copy Section", function()
-		{
-			notesCopied = [];
-			sectionToCopy = curSection;
-			for (i in 0..._song.notes[curSection].sectionNotes.length)
-			{
-				var note:Array<Dynamic> = _song.notes[curSection].sectionNotes[i];
-				notesCopied.push(note);
-			}
-
-			var startThing:Float = sectionStartTime();
-			var endThing:Float = sectionStartTime(1);
-			for (event in _song.events)
-			{
-				var strumTime:Float = event[0];
-				if(endThing > event[0] && event[0] >= startThing)
-				{
-					var copiedEventArray:Array<Dynamic> = [];
-					for (i in 0...event[1].length)
-					{
-						var eventToPush:Array<Dynamic> = event[1][i];
-						copiedEventArray.push([eventToPush[0], eventToPush[1], eventToPush[2]]);
-					}
-					notesCopied.push([strumTime, -1, copiedEventArray]);
-				}
-			}
-		});
+		var copyButton:FlxButton = new FlxButton(10, 150, "Copy Section", copySection);
 
 		var pasteButton:FlxButton = new FlxButton(10, 180, "Paste Section", function()
 		{
@@ -885,6 +859,35 @@ class ChartingState extends MusicBeatState
 	var strumTimeInputText:FlxUIInputText; //I wanted to use a stepper but we can't scale these as far as i know :(
 	var noteTypeDropDown:FlxUIDropDownMenuCustom;
 	var currentType:Int = 0;
+
+
+	function copySection():Void
+	{
+		notesCopied = [];
+		sectionToCopy = curSection;
+		for (i in 0..._song.notes[curSection].sectionNotes.length)
+		{
+			var note:Array<Dynamic> = _song.notes[curSection].sectionNotes[i];
+			notesCopied.push(note);
+		}
+
+		var startThing:Float = sectionStartTime();
+		var endThing:Float = sectionStartTime(1);
+		for (event in _song.events)
+		{
+			var strumTime:Float = event[0];
+			if(endThing > event[0] && event[0] >= startThing)
+			{
+				var copiedEventArray:Array<Dynamic> = [];
+				for (i in 0...event[1].length)
+				{
+					var eventToPush:Array<Dynamic> = event[1][i];
+					copiedEventArray.push([eventToPush[0], eventToPush[1], eventToPush[2]]);
+				}
+				notesCopied.push([strumTime, -1, copiedEventArray]);
+			}
+		}
+	}
 
 	function addNoteUI():Void
 	{
@@ -1665,6 +1668,17 @@ class ChartingState extends MusicBeatState
 						UI_box.selected_tab = 0;
 				}
 			}
+
+			if (FlxG.keys.justPressed.N)
+			{
+				_song.notes[curSection].mustHitSection = !_song.notes[curSection].mustHitSection;
+				updateSectionUI();
+				updateGrid();
+				updateHeads();
+			}
+
+			if (FlxG.keys.justPressed.B)
+				copySection();
 
 			if (FlxG.keys.justPressed.SPACE)
 			{

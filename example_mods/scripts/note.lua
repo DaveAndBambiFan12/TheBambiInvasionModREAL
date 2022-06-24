@@ -1,3 +1,4 @@
+--[[
 chars = {'choco', 'amogus', 'nerd', 'nerd_dumb', 'expunged', 'jadi', 'voidbi', 'dave-house'}
 penis = false
 
@@ -21,3 +22,4 @@ function onCreatePost()
     end
   end
 end
+]]

@@ -25,7 +25,7 @@ class CoolUtil
 
 	public static var difficulties:Array<String> = [];
 
-	public static var threeDeeChars:Array<String> = ['choco'];
+	public static var threeDeeChars:Array<String> = ['choco', 'amogus', 'nerd', 'nerd_dumb', 'expunged', 'jadi', 'voidbi', 'dave-house'];
 
 	public static var curFreeplayGroup:Int = 0;
 
