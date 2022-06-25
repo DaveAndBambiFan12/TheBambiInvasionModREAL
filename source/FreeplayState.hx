@@ -99,17 +99,14 @@ class FreeplayState extends MusicBeatState
 						colors = [146, 113, 253];
 					}
 					var isUnlocked:Bool = true;
-					switch(song[0])
+					switch(song[0]) //dude imageine a super cool way of doing this which uses json files and maps that owuld be so aweaoms and funny !!!!
 					{
 						case 'cheating-bad-bad-man-that-is-you':
-							if(FlxG.save.data.found_errorCheater != true)
-							{
-								isUnlocked = false;
-								colors = [48, 48, 48];
-							}
+							isUnlocked = FlxG.save.data.found_errorCheater;
+						case 'opression':
+							isUnlocked = FlxG.save.data.found_opression;
 					}
-
-					addSong(song[0], i, song[1], FlxColor.fromRGB(colors[0], colors[1], colors[2]), isUnlocked);
+					addSong(song[0], i, song[1], isUnlocked ? FlxColor.fromRGB(colors[0], colors[1], colors[2]) : FlxColor.BLACK, isUnlocked);
 				}
 			}
 		}
