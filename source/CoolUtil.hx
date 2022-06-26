@@ -29,6 +29,10 @@ class CoolUtil
 
 	public static var curFreeplayGroup:Int = 0;
 
+	public static var MAIN_COLOR:Int;
+  public static var SELECTED_COLOR:Int;
+  public static var SECONDARY_COLOR:Int;
+
 	public static function getDifficultyFilePath(num:Null<Int> = null)
 	{
 		if(num == null) num = PlayState.storyDifficulty;

@@ -53,7 +53,9 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		option.onChange = onChangeAntiAliasing; //Changing onChange is only needed if you want to make a special interaction after it changes the value
 		addOption(option);
 
-		#if !html5 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
+		 /*
+		 DISABLED BECAUSE THINGS BREAK WHEN THE FRAMERATE IS HIGHER THAN 60!!!!!!!!!
+			 //Apparently other framerates isn't correctly supported on Browser? Probably it has some V-Sync shit enabled by default, idk
 		var option:Option = new Option('Framerate',
 			"Pretty self explanatory, isn't it?",
 			'framerate',
@@ -62,10 +64,10 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		addOption(option);
 
 		option.minValue = 60;
-		option.maxValue = 240;
+		option.maxValue = 60;
 		option.displayFormat = '%v FPS';
 		option.onChange = onChangeFramerate;
-		#end
+		*/
 
 		/*
 		var option:Option = new Option('Persistent Cached Data',

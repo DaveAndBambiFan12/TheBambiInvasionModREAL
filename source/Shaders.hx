@@ -13,10 +13,22 @@ class GlitchEffect
 	public var waveFrequency(default, set):Float = 0;
 	public var waveAmplitude(default, set):Float = 0;
 
-	public function new():Void
+	public function new(isPlayState:Bool = true):Void
 	{
+    trace('plz');
 		shader.uTime.value = [0];
-    PlayState.instance.shaderUpdates.push(update);
+    trace('rthe real ptornfnasd');
+    if(isPlayState) {
+      trace('im a stupid dumb moron');
+      PlayState.instance.shaderUpdates.push(update);
+    }
+    else
+    {
+      trace('HUH?!?!?!?!?!?!??');
+      TitleState.varNamedAfterBBPanzu.shadery.push(update);
+    }
+
+    trace('ok');
 	}
 
     public function update(elapsed:Float):Void
@@ -196,6 +208,7 @@ class GlitchShader extends FlxShader
     public function new()
     {
        super();
+       trace('yayayaya');
     }
 }
 

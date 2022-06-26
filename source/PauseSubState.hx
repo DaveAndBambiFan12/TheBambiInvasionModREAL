@@ -41,7 +41,7 @@ class PauseSubState extends MusicBeatSubstate
 		if(PlayState.chartingMode)
 		{
 			menuItemsOG.insert(2, 'Leave Charting Mode');
-			
+
 			var num:Int = 0;
 			if(!PlayState.instance.startingSong)
 			{
@@ -333,6 +333,7 @@ class PauseSubState extends MusicBeatSubstate
 		for (i in 0...menuItems.length) {
 			var item = new Alphabet(0, 70 * i + 30, menuItems[i], true, false);
 			item.isMenuItem = true;
+			item.itemType = 'D-Shape';
 			item.targetY = i;
 			grpMenuShit.add(item);
 
@@ -352,7 +353,7 @@ class PauseSubState extends MusicBeatSubstate
 		curSelected = 0;
 		changeSelection();
 	}
-	
+
 	function updateSkipTextStuff()
 	{
 		if(skipTimeText == null) return;

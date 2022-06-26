@@ -15,6 +15,10 @@ import flixel.addons.transition.TransitionData;
 import haxe.Json;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import flixel.addons.effects.FlxTrail;
+import flixel.addons.effects.FlxTrailArea;
+import Shaders.GlitchEffect;
+import Shaders.PulseEffect;
 #if MODS_ALLOWED
 import sys.FileSystem;
 import sys.io.File;
@@ -35,6 +39,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
+import openfl.filters.ShaderFilter;
 
 using StringTools;
 typedef TitleData =
@@ -89,16 +94,36 @@ class TitleState extends MusicBeatState
 
 	var bg:FlxSprite;
 
+	var leftJunkers:FlxSprite;
+	var rightJunkers:FlxSprite;
+	var expunged:FlxSprite;
+
+	public static var varNamedAfterBBPanzu:TitleState;
+	public var shadery:Array<Float->Void> = [];
+	public static var screenshader:Shaders.PulseEffect = new PulseEffect();
+
 
 	public static var updateVersion:String = '';
 
 	override public function create():Void
 	{
+
+		if(ClientPrefs.framerate > 60)
+		{
+			ClientPrefs.framerate = 60;
+			FlxG.updateFramerate = ClientPrefs.framerate;
+		}
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 
+		CoolUtil.MAIN_COLOR = FlxColor.fromRGB(77, 138, 255);
+	  CoolUtil.SELECTED_COLOR = FlxColor.fromRGB(86, 77, 255);
+	  CoolUtil.SECONDARY_COLOR = FlxColor.fromRGB(77, 255, 141);
+
 		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
 		WeekData.loadTheFirstEnabledMod();
+
+		varNamedAfterBBPanzu = this;
 
 		//trace(path, FileSystem.exists(path));
 
@@ -150,6 +175,8 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
+		if(curWacky[0] == '' && curWacky[1] == '')
+			curWacky = ['Secret message?', 'IS IT 3 AM?!?!?!'];
 
 		// DEBUG BULLSHIT
 
@@ -222,6 +249,9 @@ class TitleState extends MusicBeatState
 			});
 		}
 		#end
+		screenshader.waveAmplitude = 1;
+		screenshader.waveFrequency = 2;
+		screenshader.waveSpeed = 1;
 	}
 
 
@@ -261,20 +291,33 @@ class TitleState extends MusicBeatState
 		Conductor.changeBPM(titleJSON.bpm);
 		persistentUpdate = true;
 
-		bg = new FlxSprite();
-
-		bg.loadGraphic(Paths.image('redsky'));
-		bg.scale.set(0.65, 0.65);
+		bg = new FlxSprite().loadGraphic(Paths.image('funy/ohno', 'dave'));
 		bg.antialiasing = false;
 		bg.screenCenter();
 		add(bg);
+		if(!ClientPrefs.lowQuality)
+			addShader(bg);
+
+		leftJunkers = new FlxSprite(-59.75, 154.95).loadGraphic(Paths.image('title/left'));
+		leftJunkers.antialiasing = ClientPrefs.globalAntialiasing;
+
+		rightJunkers = new FlxSprite(824.15, 19.3).loadGraphic(Paths.image('title/right'));
+		rightJunkers.antialiasing = false;
+
+		expunged = new FlxSprite(0, 120.6);
+		expunged.frames = Paths.getSparrowAtlas('title/expunged-anim');
+		expunged.animation.addByPrefix('idle', 'idle', 6, false);
+		expunged.screenCenter(X);
+		expunged.x -= 60;
+		expunged.antialiasing = false;
+
 
 		logoBl = new FlxSprite(titleJSON.titlex, titleJSON.titley).loadGraphic(Paths.image('bambi invasion'));
-		logoBl.scale.set(0.65, 0.65);
+		logoBl.scale.set(0.35, 0.35);
 		logoBl.antialiasing = ClientPrefs.globalAntialiasing;
 
 		logoBl.updateHitbox();
-		// logoBl.screenCenter();
+		logoBl.screenCenter(X);
 		// logoBl.color = FlxColor.BLACK;
 
 		swagShader = new ColorSwap();
@@ -314,10 +357,18 @@ class TitleState extends MusicBeatState
 		}
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
 
-		add(gfDance);
-		gfDance.shader = swagShader.shader;
+		//add(gfDance);
+		//gfDance.shader = swagShader.shader;
+
+		add(leftJunkers);
+		add(rightJunkers);
+		if(!ClientPrefs.lowQuality)
+		{
+			var evilTrail = new FlxTrail(expunged, null, 4, 24, 0.3, 0.069); //nice
+			add(evilTrail);
+		}
+		add(expunged);
 		add(logoBl);
-		logoBl.shader = swagShader.shader;
 
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
 		#if (desktop && MODS_ALLOWED)
@@ -401,6 +452,8 @@ class TitleState extends MusicBeatState
 
 	var transitioning:Bool = false;
 	private static var playJingle:Bool = false;
+
+	var shiftThing:Int = 1;
 
 	override function update(elapsed:Float)
 	{
@@ -512,10 +565,27 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		}
 
-		if(swagShader != null)
+		if(swagShader != null && ClientPrefs.flashing)
 		{
-			if(controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
-			if(controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
+			if(FlxG.keys.pressed.SHIFT) shiftThing = 4;
+			if(!FlxG.keys.pressed.SHIFT) shiftThing = 1;
+			if(controls.UI_LEFT && screenshader.shader.uampmul.value[0] > 0)
+			{
+				screenshader.shader.uTime.value[0] -= elapsed * shiftThing;
+				screenshader.shader.uampmul.value[0] -= elapsed * 0.1 * shiftThing;
+			}
+
+			if(controls.UI_RIGHT)
+			{
+				screenshader.shader.uTime.value[0] += elapsed * shiftThing;
+				screenshader.shader.uampmul.value[0] += elapsed * 0.1 * shiftThing;
+			}
+			if(controls.RESET)
+			{
+				FlxG.camera.flash(FlxColor.WHITE, 1);
+				screenshader.shader.uTime.value[0] = 0;
+				screenshader.shader.uampmul.value[0] = 0;
+			}
 		}
 
 
@@ -524,8 +594,24 @@ class TitleState extends MusicBeatState
 		elapsedTime += elapsed;
 		if(logoBl != null)
 			logoBl.angle = Math.sin(elapsedTime);
-		if(bg != null)
-			bg.y += 0.5*Math.cos(elapsedTime);
+
+		if(leftJunkers != null)
+			leftJunkers.y += 0.5*Math.sin(elapsedTime + 3);
+
+		if(rightJunkers != null)
+			rightJunkers.y += 0.5*Math.cos(elapsedTime + 3);
+
+		if(expunged != null)
+		{
+			expunged.x += Math.sin(elapsedTime);
+			expunged.y += Math.cos(elapsedTime * 2);
+		}
+
+		for (i in shadery){
+			i(elapsed);
+		}
+
+		FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
 	}
 
 	function createCoolText(textArray:Array<String>, ?offset:Float = 0)
@@ -579,73 +665,77 @@ class TitleState extends MusicBeatState
 				gfDance.animation.play('danceLeft');
 		}
 
-		if(!closedState) {
-			sickBeats++;
+
+		sickBeats++;
+		if(expunged != null && (sickBeats-1) % 2 == 0)
+			expunged.animation.play('idle', true);
+		if(!closedState)
+		{
 			switch (sickBeats)
 			{
 				case 1:
-					#if PSYCH_WATERMARKS
-					createCoolText(['Psych Engine by'], 15);
-					#else
-					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-					#end
-				// credTextShit.visible = true;
+					createCoolText(['FNF by:', 'ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 				case 3:
-					#if PSYCH_WATERMARKS
+					deleteCoolText();
+					addMoreText('Dave and Bambi by:');
+				case 5:
+					addMoreText('MoldyGH');
+					addMoreText('MissingTextureMan101');
+					addMoreText('Rapparep LOL');
+					addMoreText('Erizur');
+					addMoreText('TheBuilderXD');
+
+				case 7:
+					deleteCoolText();
+					createCoolText(['Psych Engine by'], 15);
 					addMoreText('Shadow Mario', 15);
 					addMoreText('RiverOaken', 15);
 					addMoreText('shubs', 15);
-					#else
-					addMoreText('present');
-					#end
-				// credTextShit.text += '\npresent...';
-				// credTextShit.addText();
-				case 4:
-					deleteCoolText();
-				// credTextShit.visible = false;
-				// credTextShit.text = 'In association \nwith';
-				// credTextShit.screenCenter();
-				case 5:
-					#if PSYCH_WATERMARKS
-					createCoolText(['Not associated', 'with'], -40);
-					#else
-					createCoolText(['In association', 'with'], -40);
-					#end
-				case 7:
-					addMoreText('newgrounds', -40);
-					ngSpr.visible = true;
-				// credTextShit.text += '\nNewgrounds';
-				case 8:
-					deleteCoolText();
-					ngSpr.visible = false;
-				// credTextShit.visible = false;
-
-				// credTextShit.text = 'Shoutouts Tom Fulp';
-				// credTextShit.screenCenter();
 				case 9:
+					deleteCoolText();
+					addMoreText('This mod by:');
+					addMoreText('Mayo78!!!!');
+				case 11:
+					deleteCoolText();
+				case 13:
 					createCoolText([curWacky[0]]);
 				// credTextShit.visible = true;
-				case 11:
-					addMoreText(curWacky[1]);
-				// credTextShit.text += '\nlmao';
-				case 12:
-					deleteCoolText();
-				// credTextShit.visible = false;
-				// credTextShit.text = "Friday";
-				// credTextShit.screenCenter();
-				case 13:
-					addMoreText('Friday');
-				// credTextShit.visible = true;
-				case 14:
-					addMoreText('Night');
-				// credTextShit.text += '\nNight';
 				case 15:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+					addMoreText(curWacky[1]);
+					var oldWacky:Array<String> = curWacky;
+					curWacky = FlxG.random.getObject(getIntroTextShit());
+					if(curWacky == oldWacky)
+						curWacky = ['Totally not', 'duplicated text!'];
 
-				case 16:
+				// credTextShit.text += '\nlmao';
+				case 17:
+					deleteCoolText();
+					createCoolText([curWacky[0]]);
+
+				case 19:
+					addMoreText(curWacky[1]);
+
+				case 21:
+					deleteCoolText();
+
+				case 23:
+					deleteCoolText();
+					addMoreText('Dave');
+				// credTextShit.visible = true;
+				case 25:
+					addMoreText('And');
+				// credTextShit.text += '\nNight';
+				case 27:
+					addMoreText('Bambi'); // credTextShit.text += '\nFunkin';
+
+				case 29:
+					addMoreText('BAMBI INVASION!'); // credTextShit.text += '\nFunkin';
+
+				case 31:
 					skipIntro();
 			}
 		}
+
 	}
 
 	var skippedIntro:Bool = false;
@@ -726,5 +816,14 @@ class TitleState extends MusicBeatState
 			}
 			skippedIntro = true;
 		}
+	}
+	public function addShader(object:FlxSprite,waveSpeed:Float = 2,waveFrq:Float = 5,waveAmp:Float = 0.1)
+	{
+		trace('shadow mario mad LOL!!!!', waveSpeed, waveFrq, waveAmp);
+		var testshader:Shaders.GlitchEffect = new Shaders.GlitchEffect(false);
+		testshader.waveAmplitude = waveAmp;
+		testshader.waveFrequency = waveFrq;
+		testshader.waveSpeed = waveSpeed;
+		object.shader = testshader.shader;
 	}
 }

@@ -4740,7 +4740,7 @@ class PlayState extends MusicBeatState
 	public function addShader(object:FlxSprite,waveSpeed:Float = 2,waveFrq:Float = 5,waveAmp:Float = 0.1)
 	{
 		trace('shadow mario mad LOL!!!!', waveSpeed, waveFrq, waveAmp);
-		var testshader:Shaders.GlitchEffect = new Shaders.GlitchEffect();
+		var testshader:Shaders.GlitchEffect = new Shaders.GlitchEffect(true);
 		testshader.waveAmplitude = waveAmp;
 		testshader.waveFrequency = waveFrq;
 		testshader.waveSpeed = waveSpeed;

@@ -64,7 +64,7 @@ class FreeplaySelectState extends MusicBeatState
 
         persistentUpdate = persistentDraw = true;
 
-		    var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBGBlue'));
+		    var bg:MenuBG = new MenuBG(-80, 0, CoolUtil.SECONDARY_COLOR);
         bg.scrollFactor.set(yScroll);
         bg.setGraphicSize(Std.int(bg.width * 1.5));
         bg.updateHitbox();

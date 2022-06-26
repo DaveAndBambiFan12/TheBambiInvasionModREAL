@@ -55,7 +55,7 @@ class FreeplayState extends MusicBeatState
 
 	private var iconArray:Array<HealthIcon> = [];
 
-	var bg:FlxSprite;
+	var bg:MenuBG;
 	var intendedColor:Int;
 	var colorTween:FlxTween;
 
@@ -123,8 +123,7 @@ class FreeplayState extends MusicBeatState
 			}
 		}*/
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg = new MenuBG(0, 0);
 		add(bg);
 		bg.screenCenter();
 
@@ -135,12 +134,13 @@ class FreeplayState extends MusicBeatState
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].isUnlocked ? songs[i].songName : 'Locked!', true, false);
 			songText.isMenuItem = true;
+			songText.itemType = 'D-Shape';
 			songText.targetY = i;
 			grpSongs.add(songText);
 
-			if (songText.width > 980)
+			if (songText.width > 800) //changed cause the disc shape is a little wackty and funny
 			{
-				var textScale:Float = 980 / songText.width;
+				var textScale:Float = 500 / songText.width;
 				songText.scale.x = textScale;
 				for (letter in songText.lettersArray)
 				{
