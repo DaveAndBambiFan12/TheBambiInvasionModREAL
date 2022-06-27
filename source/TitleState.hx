@@ -175,7 +175,7 @@ class TitleState extends MusicBeatState
 		PlayerSettings.init();
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
-		if(curWacky[0] == '' && curWacky[1] == '')
+		if(curWacky[0] == '' || curWacky[0] == null)
 			curWacky = ['Secret message?', 'IS IT 3 AM?!?!?!'];
 
 		// DEBUG BULLSHIT
