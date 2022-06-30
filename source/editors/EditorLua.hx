@@ -28,7 +28,7 @@ import Controls;
 import DialogueBoxPsych;
 
 #if desktop
-import Discord;
+//dumb dis BORED cause im BOREDwehen i USE IT
 #end
 
 using StringTools;
@@ -180,7 +180,7 @@ class EditorLua {
 			}
 		});
 
-		Discord.DiscordClient.addLuaCallbacks(lua);
+		//not dissy//shut up not that stupid app hahahahahahhahaha.addLuaCallbacks(lua);
 
 		call('onCreate', []);
 		#end

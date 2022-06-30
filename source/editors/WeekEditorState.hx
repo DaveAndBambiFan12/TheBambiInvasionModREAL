@@ -1,7 +1,7 @@
 package editors;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -367,7 +367,7 @@ class WeekEditorState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Week Editor", "Editting: " + weekFileName);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Week Editor", "Editting: " + weekFileName);
 		#end
 	}
 	

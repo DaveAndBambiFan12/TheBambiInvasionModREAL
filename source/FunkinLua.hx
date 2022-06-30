@@ -38,7 +38,7 @@ import Controls;
 import DialogueBoxPsych;
 
 #if desktop
-import Discord;
+//dumb dis BORED cause im BOREDwehen i USE IT
 #end
 
 using StringTools;
@@ -1435,7 +1435,7 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "changePresence", function(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float) {
 			#if desktop
-			DiscordClient.changePresence(details, state, smallImageKey, hasStartTimestamp, endTimestamp);
+			//shut up not that stupid app hahahahahahhahaha.changePresence(details, state, smallImageKey, hasStartTimestamp, endTimestamp);
 			#end
 		});
 

@@ -1,7 +1,7 @@
 package;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
@@ -41,7 +41,7 @@ class CreditsState extends MusicBeatState
 	{
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("In the Menus", null);
 		#end
 
 		persistentUpdate = true;

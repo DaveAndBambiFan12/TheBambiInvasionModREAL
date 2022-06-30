@@ -1,7 +1,7 @@
 package;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
@@ -29,14 +29,14 @@ class AchievementsMenuState extends MusicBeatState
 
 	override function create() {
 		#if desktop
-		DiscordClient.changePresence("Achievements Menu", null);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Achievements Menu", null);
 		#end
 
 		var menuBG:MenuBG = new MenuBG(0, 0, CoolUtil.SECONDARY_COLOR);
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
-		
+
 		add(menuBG);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();

@@ -83,6 +83,8 @@ class Note extends FlxSprite
 	public var hitsoundDisabled:Bool = false;
 	public var char:String;
 
+	public var isThreeDee:Bool = false; //for sussy notes
+
 	public function set_texture(value:String):String {
 		if(texture != value) {
 			reloadNote('', value);
@@ -267,14 +269,19 @@ class Note extends FlxSprite
 		var skin:String = texture;
 		if(texture.length < 1) {
 			skin = PlayState.SONG.arrowSkin;
-			if(skin == null || skin.length < 1) {
-				if(CoolUtil.threeDeeChars.contains(char) || CoolUtil.threeDeeChars.contains(PlayState.SONG.player1) && PlayState.SONG.player2 == char && FlxG.random.bool(25)|| CoolUtil.threeDeeChars.contains(PlayState.SONG.player2) && PlayState.SONG.player1 == char && FlxG.random.bool(25))
+			if(skin == null && (noteType != null || noteType.length < 1) || skin.length < 1 && (noteType != null || noteType.length < 1)) {
+				if(CoolUtil.threeDeeChars.contains(char) || CoolUtil.threeDeeChars.contains(PlayState.SONG.player1) && PlayState.SONG.player2 == char && FlxG.random.bool(25)|| CoolUtil.threeDeeChars.contains(PlayState.SONG.player2) && PlayState.SONG.player1 == char && FlxG.random.bool(25) && !isSustainNote || isThreeDee)
 				{
 					antialiasing = false;
+					isThreeDee = true;
 					skin = 'NOTE_assets_3D';
 				}
 				else
+				{
+					antialiasing = ClientPrefs.globalAntialiasing;
+					isThreeDee = false;
 					skin = 'NOTE_assets';
+				}
 			}
 		}
 

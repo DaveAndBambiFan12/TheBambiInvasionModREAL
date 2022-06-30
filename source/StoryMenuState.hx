@@ -1,7 +1,7 @@
 package;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -100,7 +100,7 @@ class StoryMenuState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("In the Menus", null);
 		#end
 
 		var num:Int = 0;

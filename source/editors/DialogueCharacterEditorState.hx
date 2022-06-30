@@ -1,7 +1,7 @@
 package editors;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -465,7 +465,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Dialogue Character Editor", "Editting: " + character.jsonFile.image);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Dialogue Character Editor", "Editting: " + character.jsonFile.image);
 		#end
 	}
 

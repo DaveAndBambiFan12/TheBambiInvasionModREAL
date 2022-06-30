@@ -1,7 +1,7 @@
 package options;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
@@ -56,7 +56,7 @@ class OptionsState extends MusicBeatState
 
 	override function create() {
 		#if desktop
-		DiscordClient.changePresence("Options Menu", null);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Options Menu", null);
 		#end
 
 		var bg:MenuBG = new MenuBG(0, 0, 0xFFea71fd);

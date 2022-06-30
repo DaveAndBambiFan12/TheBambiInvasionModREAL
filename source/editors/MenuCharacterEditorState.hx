@@ -1,7 +1,7 @@
 package editors;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -50,7 +50,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		};
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
 		#end
 
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
@@ -250,7 +250,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Menu Character Editor", "Editting: " + characterFile.image);
 		#end
 	}
 

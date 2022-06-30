@@ -1,7 +1,7 @@
 package;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flash.text.TextField;
 import flixel.FlxG;

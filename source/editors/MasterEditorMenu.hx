@@ -1,7 +1,7 @@
 package editors;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -40,7 +40,7 @@ class MasterEditorMenu extends MusicBeatState
 		FlxG.camera.bgColor = FlxColor.BLACK;
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Editors Main Menu", null);
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Editors Main Menu", null);
 		#end
 
 		var bg:MenuBG = new MenuBG(0, 0);

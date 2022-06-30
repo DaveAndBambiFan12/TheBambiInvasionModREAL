@@ -1,7 +1,7 @@
 package;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 import sys.thread.Thread;
 #end
 import flixel.FlxG;
@@ -18,7 +18,9 @@ import openfl.display.BitmapData;
 import flixel.addons.effects.FlxTrail;
 import flixel.addons.effects.FlxTrailArea;
 import Shaders.GlitchEffect;
+#if windows //APPARENTLY MAC (and possibly linux) CANT RUN THIS SHADER?!?!?!?
 import Shaders.PulseEffect;
+#end
 #if MODS_ALLOWED
 import sys.FileSystem;
 import sys.io.File;
@@ -100,7 +102,9 @@ class TitleState extends MusicBeatState
 
 	public static var varNamedAfterBBPanzu:TitleState;
 	public var shadery:Array<Float->Void> = [];
+	#if windows
 	public static var screenshader:Shaders.PulseEffect = new PulseEffect();
+	#end
 
 
 	public static var updateVersion:String = '';
@@ -233,25 +237,17 @@ class TitleState extends MusicBeatState
 			FlxTransitionableState.skipNextTransOut = true;
 			MusicBeatState.switchState(new FlashingState());
 		} else {
-			#if desktop
-			if (!DiscordClient.isInitialized)
-			{
-				DiscordClient.initialize();
-				Application.current.onExit.add (function (exitCode) {
-					DiscordClient.shutdown();
-				});
-			}
-			#end
-
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				startIntro();
 			});
 		}
 		#end
+		#if windows
 		screenshader.waveAmplitude = 1;
 		screenshader.waveFrequency = 2;
 		screenshader.waveSpeed = 1;
+		#end
 	}
 
 
@@ -565,6 +561,7 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		}
 
+		#if windows
 		if(swagShader != null && ClientPrefs.flashing)
 		{
 			if(FlxG.keys.pressed.SHIFT) shiftThing = 4;
@@ -587,6 +584,7 @@ class TitleState extends MusicBeatState
 				screenshader.shader.uampmul.value[0] = 0;
 			}
 		}
+		#end
 
 
 		super.update(elapsed);
@@ -611,7 +609,9 @@ class TitleState extends MusicBeatState
 			i(elapsed);
 		}
 
+		#if windows
 		FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
+		#end
 	}
 
 	function createCoolText(textArray:Array<String>, ?offset:Float = 0)

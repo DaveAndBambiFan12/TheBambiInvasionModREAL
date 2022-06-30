@@ -1,7 +1,7 @@
 package editors;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import Conductor.BPMChangeEvent;
 import Section.SwagSection;
@@ -233,7 +233,7 @@ class ChartingState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("Chart Editor", StringTools.replace(_song.song, '-', ' '));
+		//shut up not that stupid app hahahahahahhahaha.changePresence("Chart Editor", StringTools.replace(_song.song, '-', ' '));
 		#end
 
 		vortex = FlxG.save.data.chart_vortex;

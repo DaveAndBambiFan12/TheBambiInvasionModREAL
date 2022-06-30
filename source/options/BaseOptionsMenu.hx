@@ -1,7 +1,7 @@
 package options;
 
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import flash.text.TextField;
 import flixel.FlxG;
@@ -52,7 +52,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		if(rpcTitle == null) rpcTitle = 'Options Menu';
 
 		#if desktop
-		DiscordClient.changePresence(rpcTitle, null);
+		//shut up not that stupid app hahahahahahhahaha.changePresence(rpcTitle, null);
 		#end
 
 		var bg:MenuBG = new MenuBG(0, 0, 0xFFea71fd);

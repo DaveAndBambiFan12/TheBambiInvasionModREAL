@@ -2,7 +2,7 @@ package;
 
 import flixel.graphics.FlxGraphic;
 #if desktop
-import Discord.DiscordClient;
+//dont import didscord!!!//shut up not that stupid app hahahahahahhahaha;
 #end
 import Section.SwagSection;
 import Song.SwagSong;
@@ -58,7 +58,9 @@ import DialogueBoxPsych;
 #if sys
 import sys.FileSystem;
 #end
+#if windows
 import Shaders.PulseEffect;
+#end
 import openfl.filters.ShaderFilter;
 
 using StringTools;
@@ -296,7 +298,9 @@ class PlayState extends MusicBeatState
 
 	public static var daSongFinished:Bool = false;
 
+	#if windows
 	public static var screenshader:Shaders.PulseEffect = new PulseEffect();
+	#end
 
 	public static var floatyGuys:Array<String> = ['choco', 'expunged', 'jadi', 'nerd', 'nerd-dumb', 'voidbi', 'amogus'];
 
@@ -441,10 +445,12 @@ class PlayState extends MusicBeatState
 			};
 		}
 
+		#if windows
 		screenshader.waveAmplitude = 1;
 		screenshader.waveFrequency = 2;
 		screenshader.waveSpeed = 1;
 		screenshader.shader.uTime.value[0] = new flixel.math.FlxRandom().float(-100000, 100000);
+		#end
 
 		defaultCamZoom = stageData.defaultZoom;
 		isPixelStage = stageData.isPixelStage;
@@ -1050,7 +1056,7 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence.
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+		//shut up not that stupid app hahahahahahhahaha.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
 
 		if(!ClientPrefs.controllerMode)
@@ -1621,7 +1627,7 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		// Updating Discord Rich Presence (with Time Left)
-		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength);
+		//shut up not that stupid app hahahahahahhahaha.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength);
 		#end
 		setOnLuas('songLength', songLength);
 		callOnLuas('onSongStart', []);
@@ -1739,6 +1745,8 @@ class PlayState extends MusicBeatState
 						sustainNote.gfNote = (section.gfSection && (songNotes[1]<4));
 						sustainNote.noteType = swagNote.noteType;
 						sustainNote.scrollFactor.set();
+						sustainNote.isThreeDee = swagNote.isThreeDee;
+						sustainNote.reloadNote();
 						unspawnNotes.push(sustainNote);
 
 						if (sustainNote.mustPress)
@@ -1986,11 +1994,11 @@ class PlayState extends MusicBeatState
 			#if desktop
 			if (startTimer != null && startTimer.finished)
 			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
+				//shut up not that stupid app hahahahahahhahaha.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
 			}
 			else
 			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+				//shut up not that stupid app hahahahahahhahaha.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 			}
 			#end
 		}
@@ -2005,11 +2013,11 @@ class PlayState extends MusicBeatState
 		{
 			if (Conductor.songPosition > 0.0)
 			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
+				//shut up not that stupid app hahahahahahhahaha.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.noteOffset);
 			}
 			else
 			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+				//shut up not that stupid app hahahahahahhahaha.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 			}
 		}
 		#end
@@ -2022,7 +2030,7 @@ class PlayState extends MusicBeatState
 		#if desktop
 		if (health > 0 && !paused)
 		{
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+			//shut up not that stupid app hahahahahahhahaha.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		}
 		#end
 
@@ -2233,7 +2241,7 @@ class PlayState extends MusicBeatState
 				//}
 
 				#if desktop
-				DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+				//shut up not that stupid app hahahahahahhahaha.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 				#end
 			}
 		}
@@ -2280,6 +2288,7 @@ class PlayState extends MusicBeatState
 			MusicBeatState.switchState(new CharacterEditorState(SONG.player2));
 		}
 
+		#if windows
 		FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
 		screenshader.shader.uTime.value[0] += elapsed;
 		if (screenshader.Enabled)
@@ -2290,6 +2299,7 @@ class PlayState extends MusicBeatState
 		{
 			screenshader.shader.uampmul.value[0] -= (elapsed / 2);
 		}
+		#end
 
 		if (startingSong)
 		{
@@ -2628,18 +2638,22 @@ class PlayState extends MusicBeatState
 				chartingMode = true;
 
 				#if desktop
-				DiscordClient.changePresence("Chart Editor", null, null, true);
+				//shut up not that stupid app hahahahahahhahaha.changePresence("Chart Editor", null, null, true);
 				#end
 		}
 	}
 
 	function disableEyeSores()
 	{
+		#if windows
 		if(screenshader != null)
 		{
 			screenshader.shader.uampmul.value[0] = 0;
 			screenshader.Enabled = false;
 		}
+		#else
+		return;
+		#end
 	}
 
 	public var isDead:Bool = false; //Don't mess with this on Lua!!!
@@ -2670,7 +2684,7 @@ class PlayState extends MusicBeatState
 
 				#if desktop
 				// Game Over doesn't get his own variable because it's only used here
-				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+				//shut up not that stupid app hahahahahahhahaha.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 				#end
 				isDead = true;
 				return true;
@@ -2991,7 +3005,7 @@ class PlayState extends MusicBeatState
 						};
 						for(note in unspawnNotes)
 						{
-							if(note.mustPress)
+							if(note.mustPress && (note.noteType == null || note.noteType == '' || note.noteType.trim().length < 1))
 							{
 								note.char = value2;
 								note.reloadNote();
@@ -2999,7 +3013,7 @@ class PlayState extends MusicBeatState
 						};
 						for(note in notes)
 						{
-							if(note.mustPress)
+							if(note.mustPress && (note.noteType == null || note.noteType == '' || note.noteType.trim().length < 1))
 							{
 								note.char = value2;
 								note.reloadNote();
@@ -3034,7 +3048,7 @@ class PlayState extends MusicBeatState
 						};
 						for(note in unspawnNotes)
 						{
-							if(!note.mustPress)
+							if(!note.mustPress && (note.noteType == null || note.noteType == '' || note.noteType.trim().length < 1))
 							{
 								note.char = value2;
 								note.reloadNote();
@@ -3042,7 +3056,7 @@ class PlayState extends MusicBeatState
 						};
 						for(note in notes)
 						{
-							if(!note.mustPress)
+							if(!note.mustPress && (note.noteType == null || note.noteType == '' || note.noteType.trim().length < 1))
 							{
 								note.char = value2;
 								note.reloadNote();
@@ -3110,11 +3124,14 @@ class PlayState extends MusicBeatState
 				}
 
 			case 'eyesore toggle':
+
 				trace('EYESORES ENABLING OMG');
+				#if windows
 				if(ClientPrefs.flashing)
 					screenshader.Enabled = !screenshader.Enabled;
 				else
 					trace('k nevermind');
+				#end
 
 			case 'swapBG':
 				camOther.flash(FlxColor.WHITE, 0.5);
