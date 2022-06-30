@@ -507,6 +507,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 
 
 		var daSound:String = null; //idk if this is gonna be an issue but just incase
+		var daVolume:Float = 1;
 
 		switch(arrayCharacters[character].curCharacter)
 		{
@@ -514,14 +515,16 @@ class DialogueBoxPsych extends FlxSpriteGroup
 				daSound = 'dave_talk';
 			case 'white' | 'fatty' | 'expunged' | 'error':
 				daSound = 'bambi_dialogue';
+				daVolume = 0.5;
 			case 'amog':
 				daSound = 'amog';
+				daVolume = 0.5;
 			default:
 				daSound = curDialogue.sound;
 		}
 
 		textToType = curDialogue.text;
-		Alphabet.setDialogueSound(daSound);
+		Alphabet.setDialogueSound(daSound, daVolume);
 		daText = new Alphabet(DEFAULT_TEXT_X, DEFAULT_TEXT_Y, textToType, false, true, curDialogue.speed, 0.7);
 		add(daText);
 

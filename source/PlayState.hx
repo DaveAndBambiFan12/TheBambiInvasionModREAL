@@ -527,7 +527,7 @@ class PlayState extends MusicBeatState
 				grass = new BGSprite('bg/grass', -320, 20);
 				ezScale(grass, 1.7, 1.7);
 				add(grass);
-			case 'chocoStage' | 'nerdStage' | 'sussyStage' | 'equivocation' | 'unfairness':
+			case 'chocoStage' | 'nerdStage' | 'sussyStage' | 'equivocation' | 'unfairness' | 'scary':
 				var pathy:String;
 				switch(curStage)
 				{
@@ -549,6 +549,8 @@ class PlayState extends MusicBeatState
 						add(davesHouse);
 					case 'unfairness':
 						pathy = 'funy/ohno';
+					case 'scary':
+						pathy = 'scarybg';
 					default:
 						stageData.directory = '';
 						pathy = 'redsky';
@@ -1816,6 +1818,13 @@ class PlayState extends MusicBeatState
 				}
 
 				var newCharacter:String = event.value2;
+				if(charType != 2)
+				{
+					if(CoolUtil.threeDeeChars.contains(newCharacter))
+						Paths.returnGraphic('NOTE_assets_3D');
+					else
+						Paths.returnGraphic('NOTE_assets');
+				}
 				addCharacterToList(newCharacter, charType);
 		}
 
@@ -2975,6 +2984,27 @@ class PlayState extends MusicBeatState
 							boyfriend.alpha = lastAlpha;
 							iconP1.changeIcon(boyfriend.healthIcon);
 						}
+						for(strummy in playerStrums)
+						{
+							strummy.char = value2;
+							strummy.reloadNote();
+						};
+						for(note in unspawnNotes)
+						{
+							if(note.mustPress)
+							{
+								note.char = value2;
+								note.reloadNote();
+							}
+						};
+						for(note in notes)
+						{
+							if(note.mustPress)
+							{
+								note.char = value2;
+								note.reloadNote();
+							}
+						};
 						setOnLuas('boyfriendName', boyfriend.curCharacter);
 
 					case 1:
@@ -2997,6 +3027,27 @@ class PlayState extends MusicBeatState
 							dad.alpha = lastAlpha;
 							iconP2.changeIcon(dad.healthIcon);
 						}
+						for(strummy in opponentStrums)
+						{
+							strummy.char = value2;
+							strummy.reloadNote();
+						};
+						for(note in unspawnNotes)
+						{
+							if(!note.mustPress)
+							{
+								note.char = value2;
+								note.reloadNote();
+							}
+						};
+						for(note in notes)
+						{
+							if(!note.mustPress)
+							{
+								note.char = value2;
+								note.reloadNote();
+							}
+						};
 						setOnLuas('dadName', dad.curCharacter);
 
 					case 2:

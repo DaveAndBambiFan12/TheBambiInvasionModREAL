@@ -38,6 +38,7 @@ class MenuBG extends FlxSprite
 
 
   //only use the first 3 values! the ohter ones are so the thing works :)
+  //set duration to 0 for infinite flickering!
   public function flicker(duration:Float, interval:Float, ?newColor:Int, ?orig:Bool = false, first:Bool = true)
   {
     if(first)

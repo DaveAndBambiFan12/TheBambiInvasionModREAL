@@ -11,6 +11,10 @@ class MenuItem extends FlxSprite
 	public var targetY:Float = 0;
 	public var flashingInt:Int = 0;
 
+	var ofsX = 33;
+
+	var ofsY = -30;
+
 	public function new(x:Float, y:Float, weekName:String = '')
 	{
 		super(x, y);
@@ -35,7 +39,33 @@ class MenuItem extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		y = FlxMath.lerp(y, (targetY * 120) + 480, CoolUtil.boundTo(elapsed * 10.2, 0, 1));
+
+		/*
+		DEBUG STUFF
+		if(FlxG.keys.pressed.G)
+			ofsY -= 1;
+		else if(FlxG.keys.pressed.B)
+			ofsY += 1;
+
+		if(FlxG.keys.pressed.V)
+			ofsX -= 1;
+		else if(FlxG.keys.pressed.N)
+			ofsX += 1;
+
+		if(FlxG.keys.pressed.H)
+			trace(ofsX, ofsY);
+
+		*/
+
+
+
+		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
+		y = (FlxMath.lerp(y, (scaledY * 90) + (FlxG.height * 0.45), 0.16 / (openfl.Lib.application.window.frameRate / 60))) - ofsY;
+
+		x = (FlxMath.lerp(x, Math.exp(Math.abs(scaledY * 0.8)) * -70 + (FlxG.width * 0.35), 0.16 / (openfl.Lib.application.window.frameRate / 60))) + ofsX;
+
+		if (x < -900 + ofsX)
+			x = -900 + ofsX;
 
 		if (isFlashing)
 			flashingInt += 1;

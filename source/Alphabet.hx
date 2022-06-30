@@ -204,11 +204,13 @@ class Alphabet extends FlxSpriteGroup
 	public var curRow:Int = 0;
 	var dialogueSound:FlxSound = null;
 	private static var soundDialog:Sound = null;
+	private static var soundVolume:Float = 1;
 	var consecutiveSpaces:Int = 0;
-	public static function setDialogueSound(name:String = '')
+	public static function setDialogueSound(name:String = '', volume:Float = 1)
 	{
 		if (name == null || name.trim() == '') name = 'dialogue';
 		soundDialog = Paths.sound(name);
+		soundVolume = volume;
 		if(soundDialog == null) soundDialog = Paths.sound('dialogue');
 	}
 
@@ -230,7 +232,7 @@ class Alphabet extends FlxSpriteGroup
 				timerCheck();
 			}
 			if(dialogueSound != null) dialogueSound.stop();
-			dialogueSound = FlxG.sound.play(soundDialog);
+			dialogueSound = FlxG.sound.play(soundDialog, soundVolume);
 		} else {
 			typeTimer = new FlxTimer().start(0.1, function(tmr:FlxTimer) {
 				typeTimer = new FlxTimer().start(speed, function(tmr:FlxTimer) {

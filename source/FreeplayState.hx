@@ -33,7 +33,7 @@ class FreeplayState extends MusicBeatState
   [
     ['tutorial', 'week1', 'week2', 'week3'],
 		['tgn'],
-		['cheating']
+		['bambiphobia', 'cheating']
   ];
 	var curGroup:Int;
 
@@ -172,12 +172,13 @@ class FreeplayState extends MusicBeatState
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("comic.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 80, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 50, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
 		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
+		diffText.visible = false; //im lazy
 		add(diffText);
 
 		add(scoreText);
@@ -330,11 +331,11 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		if (controls.UI_LEFT_P)
+		/*if (controls.UI_LEFT_P)
 			changeDiff(-1);
 		else if (controls.UI_RIGHT_P)
 			changeDiff(1);
-		else if (upP || downP) changeDiff();
+		else */if (upP || downP) changeDiff();
 
 		if (controls.BACK)
 		{

@@ -21,7 +21,7 @@ class StrumNote extends FlxSprite
 
 	public var char:String;
 
-	private function set_texture(value:String):String {
+	public function set_texture(value:String):String {
 		if(texture != value) {
 			texture = value;
 			reloadNote();
@@ -56,6 +56,14 @@ class StrumNote extends FlxSprite
 	{
 		var lastAnim:String = null;
 		if(animation.curAnim != null) lastAnim = animation.curAnim.name;
+
+		if(CoolUtil.threeDeeChars.contains(char) || CoolUtil.threeDeeChars.contains(PlayState.SONG.player1) && PlayState.SONG.player2 == char && FlxG.random.bool(25)|| CoolUtil.threeDeeChars.contains(PlayState.SONG.player2) && PlayState.SONG.player1 == char && FlxG.random.bool(25))
+		{
+			antialiasing = false;
+			texture = 'NOTE_assets_3D';
+		}
+		else
+			texture = 'NOTE_assets';
 
 		if(PlayState.isPixelStage)
 		{

@@ -83,7 +83,7 @@ class Note extends FlxSprite
 	public var hitsoundDisabled:Bool = false;
 	public var char:String;
 
-	private function set_texture(value:String):String {
+	public function set_texture(value:String):String {
 		if(texture != value) {
 			reloadNote('', value);
 		}
@@ -259,7 +259,7 @@ class Note extends FlxSprite
 	var lastNoteOffsetXForPixelAutoAdjusting:Float = 0;
 	var lastNoteScaleToo:Float = 1;
 	public var originalHeightForCalcs:Float = 6;
-	function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '') {
+	public function reloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = '') {
 		if(prefix == null) prefix = '';
 		if(texture == null) texture = '';
 		if(suffix == null) suffix = '';
