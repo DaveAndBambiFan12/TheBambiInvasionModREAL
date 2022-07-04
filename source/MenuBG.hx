@@ -28,7 +28,7 @@ class MenuBG extends FlxSprite
       daColor = color;
     }
 
-    trace(bgs.length);
+    //trace(bgs.length);
 
     var daBG:FancyMancy = bgs[FlxG.random.int(0, bgs.length-1)];
 

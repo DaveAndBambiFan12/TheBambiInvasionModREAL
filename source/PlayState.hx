@@ -302,7 +302,7 @@ class PlayState extends MusicBeatState
 	public static var screenshader:Shaders.PulseEffect = new PulseEffect();
 	#end
 
-	public static var floatyGuys:Array<String> = ['choco', 'expunged', 'jadi', 'nerd', 'nerd-dumb', 'voidbi', 'amogus'];
+	public static var floatyGuys:Array<String> = ['choco', 'expunged', 'jadi', 'nerd', 'nerd-dumb', 'voidbi', 'amogus', 'apollo'];
 
 	//idiot song
 	//cheating, unfairness, opposition, extra one dont worry abnout that oen!
@@ -316,6 +316,8 @@ class PlayState extends MusicBeatState
 
 
 	var elapsedTime:Float = 0;
+
+	var farmhouse:BGSprite;
 
 	override public function create()
 	{
@@ -604,6 +606,46 @@ class PlayState extends MusicBeatState
 				bambiNOT.x -= 130;
 				bambiNOT.y += 380;
 				add(bambiNOT);
+
+			case 'coolCorn':
+				var skyer:BGSprite = new BGSprite('stock_sky', -440, -240);
+				skyer.scrollFactor.set(0.4, 0.4);
+				add(skyer);
+
+				var farfarBg:BGSprite = new BGSprite('ocs/buxzi/far far bg', -210, 230);
+				farfarBg.scrollFactor.set(0.5, 0.5);
+				add(farfarBg);
+
+				farmhouse = new BGSprite('ocs/buxzi/farmhouse', 970, 280);
+				farmhouse.scrollFactor.set(0.6, 0.6);
+				add(farmhouse);
+
+				var farbg:BGSprite = new BGSprite('ocs/buxzi/far bg', -210, 545);
+				farbg.scrollFactor.set(0.75, 0.75);
+				add(farbg);
+
+				var ground:BGSprite = new BGSprite('ocs/buxzi/ground', -320, 730);
+				add(ground);
+
+				var corns_1:BGSprite = new BGSprite('ocs/buxzi/corns', -480, 380);
+				add(corns_1);
+
+				var corns_2:BGSprite = new BGSprite('ocs/buxzi/corns', 1010, 380);
+				add(corns_2);
+
+				var fence_1:BGSprite = new BGSprite('ocs/buxzi/fence', -640, 580);
+				add(fence_1);
+
+				var fence_2:BGSprite = new BGSprite('ocs/buxzi/fence', 1115, 580);
+				add(fence_2);
+
+			case 'apollo':
+				var spacebg:BGSprite = new BGSprite('ocs/apollo/space', -620, -39);
+				spacebg.scrollFactor.set(0.3, 0.3);
+				add(spacebg);
+
+				var spacefg:BGSprite = new BGSprite('ocs/apollo/apollo bg', -460, -145);
+				add(spacefg);
 		}
 
 		if(isPixelStage) {
@@ -612,6 +654,9 @@ class PlayState extends MusicBeatState
 
 		if(tgnFG == null)
 			add(gfGroup); //Needed for blammed lights //HAHAHHAHAHHAHAHAHAHAHAHAHAHAHAHAHHAHAHAHAHAHAHAHAHAHAHAHAHA
+
+		if(curStage == 'apollo' || curStage == 'coolCorn')
+			gfGroup.visible = false; //DUMB STUPID FUCK
 
 		if(curStage == 'awesome')
 		{
