@@ -603,6 +603,7 @@ class PlayState extends MusicBeatState
 				daveNOT.x -= 125;
 				daveNOT.y += 335;
 				add(daveNOT);
+
 				bambiNOT = new Character(-50, 590, 'dave-husband');
 				bambiNOT.visible = false;
 				bambiNOT.x -= 130;
@@ -644,11 +645,7 @@ class PlayState extends MusicBeatState
 			case 'apollo':
 				for(i in 1...10) { //stars omga!
 					var stars:FlxBackdrop = new FlxBackdrop(Paths.image('bfdi starz'), 0.3, 0.3, true, true, FlxG.random.int(-25, 5), FlxG.random.int(-25, 5));
-					var stupid:Array<Int> = [-25]; //exluded y speeds
-					for(fuck in -24...25) {
-						stupid.push(fuck);
-					}
-					stars.velocity.set(50 * i, FlxG.random.int(-60, 60, stupid));
+					stars.velocity.set(50 * i, FlxG.random.int(25, 60));
 					stars.angle = FlxG.random.int(0, 359);
 					add(stars);
 				}
@@ -4832,7 +4829,15 @@ class PlayState extends MusicBeatState
 
 	public function makeCredits(credits:String, altText:String, imagePath:String)
 	{
+		var daBG:FlxSprite = new FlxSprite(-1280).makeGraphic(1280, 250, FlxColor.BLACK);
+		daBG.screenCenter(Y);
+		daBG.scrollFactor.set();
+		daBG.alpha = 0.5;
+		daBG.cameras = [camHUD];
+		add(daBG);
+
 		var daGroup:FlxTypedGroup<Dynamic> = new FlxTypedGroup<Dynamic>();
+		daGroup.cameras = [camHUD];
 		add(daGroup);
 
 		var daText:FlxText = new FlxText(0, 0, FlxG.width - 800, (credits != 'VS Slopger!') ? "CHARACTER BY:" : "SONG FROM:", 48);
@@ -4870,7 +4875,7 @@ class PlayState extends MusicBeatState
 			if(daGroup.members[i] != null)
 			{
 				var theJ:Float = daGroup.members[i].x; //orignal x
-				daGroup.members[i].x = -500; //gos offscreen
+				daGroup.members[i].x -= 1280; //gos offscreen
 
 				FlxTween.tween(daGroup.members[i], {x: theJ-25}, 0.5, {
 			    ease: FlxEase.cubeOut,
@@ -4879,17 +4884,22 @@ class PlayState extends MusicBeatState
 						FlxTween.tween(daGroup.members[i], {x: theJ+25}, 1.5, {
 					    onComplete: function(twn:FlxTween)
 					    {
-								FlxTween.tween(daGroup.members[i], {x: theJ+1280+250}, 0.5, {
+								FlxTween.tween(daGroup.members[i], {x: theJ+1280}, 0.5, {
 							    ease: FlxEase.cubeIn,
 							    onComplete: function(twn:FlxTween)
 							    {
-							      trace('intro done :)');
+							      daGroup.members[i].destroy();
+										daBG.destroy();
 							    }
 						  	});
+								if(i == 0)
+									FlxTween.tween(daBG, {x: 1280}, 0.5, {ease: FlxEase.cubeIn});
 					    }
 				  	});
 			    }
 		  	});
+
+				FlxTween.tween(daBG, {x: 0}, 0.5, {ease: FlxEase.cubeOut});
 			}
 		}
 
