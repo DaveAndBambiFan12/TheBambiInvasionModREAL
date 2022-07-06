@@ -137,6 +137,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
+		var option:Option = new Option('Modcharts',
+			'Whether to use modcharts or not.',
+			'modCharts',
+			'bool',
+			true);
+		addOption(option);
+
 		super();
 	}
 }

@@ -81,9 +81,11 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-
-			['Me!!!'],
+			['Bambi Invasion'],
 			['Mayo78', 'mayo', 'like EVERYTHING', 'https://www.youtube.com/channel/UC91_S5WfjSYDAZXdlkBUsXg', '4450FF'],
+			['TB', 'tb', 'creator of apollo', 'https://twitter.com/22TPOK', '7CFF00'],
+			['Tristan Gaming', 'tristangaming', 'creator of buxzi (from axe)', 'https://www.youtube.com/channel/UCtqDK3xfywZEqS30LdJ0C5g', 'FFCF00'],
+			[''],
 			['Dave and Bambi Devs'],
 			['MoldyGH', 'moldy', 'Creator of Dave and Bambi', 'https://www.youtube.com/c/MoldyGH', '255AFF'],
 			['Rapparep LOL', 'rapparep', 'Artist of dave and some bg assets', 'https://www.youtube.com/c/rappareplol', 'FF4B4B'],
@@ -180,19 +182,23 @@ class CreditsState extends MusicBeatState
 
 				var upP = controls.UI_UP_P;
 				var downP = controls.UI_DOWN_P;
+				var rightP = controls.UI_RIGHT_P;
+				var leftP = controls.UI_LEFT_P;
 
-				if (upP)
+				if (upP || leftP)
 				{
 					changeSelection(-1 * shiftMult);
 					holdTime = 0;
 				}
-				if (downP)
+				if (downP || rightP)
 				{
 					changeSelection(1 * shiftMult);
 					holdTime = 0;
 				}
 
-				if(controls.UI_DOWN || controls.UI_UP)
+				var daRight:Bool = (controls.UI_UP || controls.UI_LEFT);
+				var daLeft:Bool = (controls.UI_DOWN || controls.UI_RIGHT);
+				if(daLeft || daRight)
 				{
 					var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
 					holdTime += elapsed;
@@ -200,7 +206,7 @@ class CreditsState extends MusicBeatState
 
 					if(holdTime > 0.5 && checkNewHold - checkLastHold > 0)
 					{
-						changeSelection((checkNewHold - checkLastHold) * (controls.UI_UP ? -shiftMult : shiftMult));
+						changeSelection((checkNewHold - checkLastHold) * (daRight ? -shiftMult : shiftMult));
 					}
 				}
 			}
@@ -238,6 +244,9 @@ class CreditsState extends MusicBeatState
 				}
 			}
 		}
+
+		if(descBox.y < 0) //maybe send to a song?
+			trace('ITS SO HIGH RN OMG XD');
 		super.update(elapsed);
 	}
 
@@ -282,10 +291,10 @@ class CreditsState extends MusicBeatState
 		}
 
 		descText.text = creditsStuff[curSelected][2];
-		descText.y = FlxG.height - descText.height + offsetThing - 60;
+		descText.y -= 75; //makes it funnier
 
 		if(moveTween != null) moveTween.cancel();
-		moveTween = FlxTween.tween(descText, {y : descText.y + 75}, 0.25, {ease: FlxEase.sineOut});
+		moveTween = FlxTween.tween(descText, {y : 612}, 0.25, {ease: FlxEase.sineOut});
 
 		descBox.setGraphicSize(Std.int(descText.width + 20), Std.int(descText.height + 25));
 		descBox.updateHitbox();

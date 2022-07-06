@@ -180,6 +180,7 @@ class FunkinLua {
 		set('healthBarAlpha', ClientPrefs.healthBarAlpha);
 		set('noResetButton', ClientPrefs.noReset);
 		set('lowQuality', ClientPrefs.lowQuality);
+		set('modCharts', ClientPrefs.modCharts);
 
 		#if windows
 		set('buildTarget', 'windows');

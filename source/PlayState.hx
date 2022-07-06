@@ -62,6 +62,7 @@ import sys.FileSystem;
 import Shaders.PulseEffect;
 #end
 import openfl.filters.ShaderFilter;
+import flixel.addons.display.FlxBackdrop;
 
 using StringTools;
 
@@ -71,7 +72,7 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 
 	public static var ratingStuff:Array<Dynamic> = [
-		['You Suck!', 0.2], //From 0% to 19%
+		['erm... u kinda bad...', 0.2], //From 0% to 19%
 		['Shit', 0.4], //From 20% to 39%
 		['Bad', 0.5], //From 40% to 49%
 		['Bruh', 0.6], //From 50% to 59%
@@ -378,9 +379,10 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
-		if(ClientPrefs.downScroll)
-			strumLine.y = 560;
-
+		trace('here!');
+		//if(ClientPrefs.downScroll)
+			//strumLine.y = 560;
+		trace('jk');
 		#if desktop
 		storyDifficultyText = CoolUtil.difficulties[storyDifficulty];
 
@@ -640,9 +642,17 @@ class PlayState extends MusicBeatState
 				add(fence_2);
 
 			case 'apollo':
-				var spacebg:BGSprite = new BGSprite('ocs/apollo/space', -620, -39);
-				spacebg.scrollFactor.set(0.3, 0.3);
-				add(spacebg);
+				for(i in 1...10) { //stars omga!
+					var stars:FlxBackdrop = new FlxBackdrop(Paths.image('bfdi starz'), 0.3, 0.3, true, true, FlxG.random.int(-25, 5), FlxG.random.int(-25, 5));
+					var stupid:Array<Int> = [-25]; //exluded y speeds
+					for(fuck in -24...25) {
+						stupid.push(fuck);
+					}
+					stars.velocity.set(50 * i, FlxG.random.int(-60, 60, stupid));
+					stars.angle = FlxG.random.int(0, 359);
+					add(stars);
+				}
+
 
 				var spacefg:BGSprite = new BGSprite('ocs/apollo/apollo bg', -460, -145);
 				add(spacefg);
@@ -844,7 +854,9 @@ class PlayState extends MusicBeatState
 		Conductor.songPosition = -5000;
 
 		strumLine = new FlxSprite(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
+		trace('here!');
 		if(ClientPrefs.downScroll) strumLine.y = FlxG.height - 150;
+		trace('jk');
 		strumLine.scrollFactor.set();
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
@@ -854,7 +866,9 @@ class PlayState extends MusicBeatState
 		timeTxt.alpha = 0;
 		timeTxt.borderSize = 2;
 		timeTxt.visible = showTime;
+		trace('here!');
 		if(ClientPrefs.downScroll) timeTxt.y = FlxG.height - 44;
+		trace('jk');
 
 		if(ClientPrefs.timeBarType == 'Song Name')
 		{
@@ -1562,6 +1576,15 @@ class PlayState extends MusicBeatState
 						});
 						FlxG.sound.play(Paths.sound('introGo' + introSoundsSuffix), 0.6);
 					case 4:
+						switch(SONG.song.toLowerCase())
+						{
+							case 'tgn':
+								makeCredits('VS Slopger! ', 'by WildyThomas', 'slopger');
+							case 'commander':
+								makeCredits('"22TPOK"', 'THERES NO INFO ON THIS PERSON?!?', 'tb');
+							case 'axe':
+								makeCredits('TRISTAN GAMING', 'TRISTAN GAMING', 'tristangaming');
+						}
 				}
 
 				notes.forEachAlive(function(note:Note) {
@@ -2583,48 +2606,51 @@ class PlayState extends MusicBeatState
 
 		//cheating, unfairness, opposition, phonophobia JK NOT phonophobia CAUSE IT DOESNT HAVE A MODCHART
 
-		if(modChartsEnabled[1])
+		if(ClientPrefs.modCharts)
 		{
-			playerStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedTime + (spr.ID)) * 300);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedTime + (spr.ID)) * 300);
-				});
+			if(modChartsEnabled[1])
+			{
+				playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin(elapsedTime + (spr.ID)) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos(elapsedTime + (spr.ID)) * 300);
+					});
+					opponentStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedTime + (spr.ID )) * 2) * 300);
+						spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedTime + (spr.ID)) * 2) * 300);
+					});
+			}
+			if(modChartsEnabled[2])
+			{
+				playerStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin(elapsedTime + (spr.ID)) * 500);
+						spr.x += 500;
+						spr.y += Math.sin(elapsedTime) * Math.random();
+						spr.y -= Math.sin(elapsedTime) * 1.3;
+					});
+					opponentStrums.forEach(function(spr:FlxSprite)
+					{
+						spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin((elapsedTime + (spr.ID )) * 2) * 500);
+						spr.x += 500;
+						spr.y += Math.sin(elapsedTime) * Math.random();
+						spr.y -= Math.sin(elapsedTime) * 1.3;
+					});
+			}
+			if(modChartsEnabled[0])
+			{
 				opponentStrums.forEach(function(spr:FlxSprite)
 				{
-					spr.x = ((FlxG.width / 2) - (spr.width / 2)) + (Math.sin((elapsedTime + (spr.ID )) * 2) * 300);
-					spr.y = ((FlxG.height / 2) - (spr.height / 2)) + (Math.cos((elapsedTime + (spr.ID)) * 2) * 300);
+					spr.x += Math.sin(elapsedTime) * ((spr.ID % 2) == 0 ? 1 : -1);
+					spr.x -= Math.sin(elapsedTime) * 1.5;
 				});
-		}
-		if(modChartsEnabled[2])
-		{
-			playerStrums.forEach(function(spr:FlxSprite)
+				playerStrums.forEach(function(spr:FlxSprite)
 				{
-					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin(elapsedTime + (spr.ID)) * 500);
-					spr.x += 500;
-					spr.y += Math.sin(elapsedTime) * Math.random();
-					spr.y -= Math.sin(elapsedTime) * 1.3;
+					spr.x -= Math.sin(elapsedTime) * ((spr.ID % 2) == 0 ? 1 : -1);
+					spr.x += Math.sin(elapsedTime) * 1.5;
 				});
-				opponentStrums.forEach(function(spr:FlxSprite)
-				{
-					spr.x = ((FlxG.width / 12) - (spr.width / 7)) + (Math.sin((elapsedTime + (spr.ID )) * 2) * 500);
-					spr.x += 500;
-					spr.y += Math.sin(elapsedTime) * Math.random();
-					spr.y -= Math.sin(elapsedTime) * 1.3;
-				});
-		}
-		if(modChartsEnabled[0])
-		{
-			opponentStrums.forEach(function(spr:FlxSprite)
-			{
-				spr.x += Math.sin(elapsedTime) * ((spr.ID % 2) == 0 ? 1 : -1);
-				spr.x -= Math.sin(elapsedTime) * 1.5;
-			});
-			playerStrums.forEach(function(spr:FlxSprite)
-			{
-				spr.x -= Math.sin(elapsedTime) * ((spr.ID % 2) == 0 ? 1 : -1);
-				spr.x += Math.sin(elapsedTime) * 1.5;
-			});
+			}
 		}
 
 		/*
@@ -4775,80 +4801,13 @@ class PlayState extends MusicBeatState
 		setOnLuas('ratingFC', ratingFC);
 	}
 
-	#if ACHIEVEMENTS_ALLOWED
-	private function checkForAchievement(achievesToCheck:Array<String> = null):String
-	{
-		if(chartingMode) return null;
+	//
 
-		var usedPractice:Bool = (ClientPrefs.getGameplaySetting('practice', false) || ClientPrefs.getGameplaySetting('botplay', false));
-		for (i in 0...achievesToCheck.length) {
-			var achievementName:String = achievesToCheck[i];
-			if(!Achievements.isAchievementUnlocked(achievementName) && !cpuControlled) {
-				var unlock:Bool = false;
-				switch(achievementName)
-				{
-					case 'week1_nomiss' | 'week2_nomiss' | 'week3_nomiss' | 'week4_nomiss' | 'week5_nomiss' | 'week6_nomiss' | 'week7_nomiss':
-						if(isStoryMode && campaignMisses + songMisses < 1 && CoolUtil.difficultyString() == 'HARD' && storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
-						{
-							var weekName:String = WeekData.getWeekFileName();
-							switch(weekName) //I know this is a lot of duplicated code, but it's easier readable and you can add weeks with different names than the achievement tag
-							{
-								case 'week1':
-									if(achievementName == 'week1_nomiss') unlock = true;
-								case 'week2':
-									if(achievementName == 'week2_nomiss') unlock = true;
-							}
-						}
-					case 'ur_bad':
-						if(ratingPercent < 0.2 && !practiceMode) {
-							unlock = true;
-						}
-					case 'ur_good':
-						if(ratingPercent >= 1 && !usedPractice) {
-							unlock = true;
-						}
-					case 'roadkill_enthusiast':
-						if(Achievements.henchmenDeath >= 100) {
-							unlock = true;
-						}
-					case 'oversinging':
-						if(boyfriend.holdTimer >= 10 && !usedPractice) {
-							unlock = true;
-						}
-					case 'hype':
-						if(!boyfriendIdled && !usedPractice) {
-							unlock = true;
-						}
-					case 'two_keys':
-						if(!usedPractice) {
-							var howManyPresses:Int = 0;
-							for (j in 0...keysPressed.length) {
-								if(keysPressed[j]) howManyPresses++;
-							}
+	//
 
-							if(howManyPresses <= 2) {
-								unlock = true;
-							}
-						}
-					case 'toastie':
-						if(/*ClientPrefs.framerate <= 60 &&*/ ClientPrefs.lowQuality && !ClientPrefs.globalAntialiasing && !ClientPrefs.imagesPersist) {
-							unlock = true;
-						}
-					case 'debugger':
-						if(Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice) {
-							unlock = true;
-						}
-				}
 
-				if(unlock) {
-					Achievements.unlockAchievement(achievementName);
-					return achievementName;
-				}
-			}
-		}
-		return null;
-	}
-	#end
+
+	//
 
 	public function addShader(object:FlxSprite,waveSpeed:Float = 2,waveFrq:Float = 5,waveAmp:Float = 0.1)
 	{
@@ -4870,4 +4829,69 @@ class PlayState extends MusicBeatState
 
 	var curLight:Int = 0;
 	var curLightEvent:Int = 0;
+
+	public function makeCredits(credits:String, altText:String, imagePath:String)
+	{
+		var daGroup:FlxTypedGroup<Dynamic> = new FlxTypedGroup<Dynamic>();
+		add(daGroup);
+
+		var daText:FlxText = new FlxText(0, 0, FlxG.width - 800, (credits != 'VS Slopger!') ? "CHARACTER BY:" : "SONG FROM:", 48);
+		daText.setFormat(Paths.font("comic.ttf"), 48, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		daText.scrollFactor.set();
+		daText.borderSize = 2;
+		daText.screenCenter();
+		daText.y -= 64;
+		daGroup.add(daText);
+
+		var daCredits:FlxText = new FlxText(0, daText.y + daText.height - 20, FlxG.width - 800, credits, 64);
+		daCredits.setFormat(Paths.font("comic.ttf"), 64, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		daCredits.scrollFactor.set();
+		daCredits.borderSize = 2.25;
+		daCredits.screenCenter(X);
+		daGroup.add(daCredits);
+
+		var daAltText:FlxText = new FlxText(0, daCredits.y + daCredits.height, FlxG.width - 800, altText, 32);
+		daAltText.setFormat(Paths.font("comic.ttf"), 32, FlxColor.fromRGB(100, 100, 100), CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		daAltText.scrollFactor.set();
+		daAltText.borderSize = 2;
+		daAltText.screenCenter(X);
+		daGroup.add(daAltText);
+
+		var stupidIcon:FlxSprite = new FlxSprite(daCredits.x + daCredits.width - 25, daCredits.y).loadGraphic(Paths.image('credits/' + imagePath));
+		stupidIcon.antialiasing = ClientPrefs.globalAntialiasing;
+		stupidIcon.scrollFactor.set();
+		ezScale(stupidIcon, 0.75);
+		stupidIcon.x -= 64;
+		stupidIcon.y -= 10;
+		daGroup.add(stupidIcon);
+
+
+		for(i in 0...daGroup.length) {
+			if(daGroup.members[i] != null)
+			{
+				var theJ:Float = daGroup.members[i].x; //orignal x
+				daGroup.members[i].x = -500; //gos offscreen
+
+				FlxTween.tween(daGroup.members[i], {x: theJ-25}, 0.5, {
+			    ease: FlxEase.cubeOut,
+			    onComplete: function(twn:FlxTween)
+			    {
+						FlxTween.tween(daGroup.members[i], {x: theJ+25}, 1.5, {
+					    onComplete: function(twn:FlxTween)
+					    {
+								FlxTween.tween(daGroup.members[i], {x: theJ+1280+250}, 0.5, {
+							    ease: FlxEase.cubeIn,
+							    onComplete: function(twn:FlxTween)
+							    {
+							      trace('intro done :)');
+							    }
+						  	});
+					    }
+				  	});
+			    }
+		  	});
+			}
+		}
+
+	}
 }
